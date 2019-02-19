@@ -1,0 +1,85 @@
+.profile-dropdown {
+    width: auto;
+}
+
+img[alt=user-image] {
+    cursor: pointer;
+}
+
+.img-fluid {
+    max-width: none;
+    width: 100%;
+}
+
+.fc-event {
+    cursor: default;
+}
+
+.checkbox input {
+    margin-right: 15px;
+}
+
+a:hover, a:focus {
+    color: #2b3a4a;
+}
+
+.disabled {
+    cursor: not-allowed;
+}
+
+.bcolor-danger {
+    border-color: red;
+}
+
+.bcolor-danger:focus {
+    border-color: red;
+}
+
+.image-preview {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+}
+
+.badge {
+    font-size: .7rem;
+}
+
+img.full-profile {
+    width: 100%;
+    height: auto;
+}
+
+div.toolbar {
+    float: left;
+    min-width: 100px;
+}
+
+@media only screen and (max-width: 500px) {
+    div.toolbar {
+        float: none;
+        margin-bottom: 15px;
+    }
+}
+
+.disabled {
+    cursor: not-allowed;
+}
+
+.nav-tabs .nav-link, .nav-pills .nav-link {
+    color: #3eb7ba;
+}
+
+.nav-tabs .nav-link, .nav-pills .nav-link:hover {
+    background-color: gainsboro;
+    color: #222;
+}
+
+.nav-pills .nav-link.active:hover{
+    background-color: #3eb7ba;
+    color: #fff;
+}
+
+.tab-pane {
+    margin-top: 30px;
+}
