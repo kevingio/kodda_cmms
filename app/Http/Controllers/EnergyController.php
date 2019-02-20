@@ -3,9 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Energy;
+use App\Models\ElectricityReport;
+use App\Models\GasReport;
+use App\Models\WaterReport;
+use DB;
 
 class EnergyController extends Controller
 {
+
+    function __construct(Energy $energy, ElectricityReport $electricity, GasReport $gas, WaterReport $water) {
+        $this->energy = $energy;
+        $this->electricity = $electricity;
+        $this->gas = $gas;
+        $this->water = $water;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +26,8 @@ class EnergyController extends Controller
      */
     public function index()
     {
-        //
+        $energy = $this->energy->first();
+        return view('energy-report.index', compact('energy'));
     }
 
     /**
@@ -23,7 +37,7 @@ class EnergyController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -34,7 +48,14 @@ class EnergyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $energy = $this->energy->first();
+        DB::transaction(function () use ($energy, $data) {
+            $this->electricity->makeReport($data, $energy);
+            // $this->gas->makeReport($data, $energy);
+            // $this->water->makeReport($data, $energy);
+        }, 3);
+        return response()->json(['status' => 200]);
     }
 
     /**
@@ -45,7 +66,8 @@ class EnergyController extends Controller
      */
     public function show($id)
     {
-        //
+        $energy = $this->energy->findOrFail(1);
+        return response()->json($energy);
     }
 
     /**
@@ -56,7 +78,7 @@ class EnergyController extends Controller
      */
     public function edit($id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -68,7 +90,9 @@ class EnergyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $this->energy->findOrFail(1)->update($data);
+        return response()->json(['status' => 200]);
     }
 
     /**
@@ -79,6 +103,26 @@ class EnergyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        abort(404);
+    }
+
+    /**
+     * Handle all AJAX request
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function ajax(Request $request)
+    {
+        switch ($request->mode) {
+            case 'electricity':
+                return $this->electricity->datatable($request->month, $request->year);
+                break;
+            case 'gas':
+                return $this->gas->datatable($request->month, $request->year);
+                break;
+            case 'water':
+                return $this->water->datatable($request->month, $request->year);
+                break;
+        }
     }
 }

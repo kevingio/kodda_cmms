@@ -63,8 +63,8 @@ class Inventory extends Model
      */
     public function datatable()
     {
-        $datas = Self::with('inventory_model')->get();
-        return Datatables::of($datas)
+        $results = Self::with('inventory_model')->get();
+        return Datatables::of($results)
             ->editColumn('model', function ($data) {
                 return $data->inventory_model->name;
             })
@@ -99,9 +99,9 @@ class Inventory extends Model
      */
     public function select2($query)
     {
-        $datas = Self::where('name', 'like', "%{$query}%")->get();
+        $data = Self::where('name', 'like', "%{$query}%")->get();
         $results = [];
-        foreach ($datas as $value) {
+        foreach ($data as $value) {
             $results[] = [
                 'id' => $value->id,
                 'text' => $value->name,

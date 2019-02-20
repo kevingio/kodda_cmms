@@ -11,7 +11,14 @@
                 </div>
                 <div class="col text-right">
                     <div class="page-title-box ">
-                        <a href="javascript: void(0)" class="btn btn-warning" data-toggle="modal" data-target="#addModal">Create Report</a>
+                        <a class="btn btn-warning dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Create
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a href="javascript: void(0)" class="dropdown-item" data-toggle="modal" data-target="#addModal">Create Report</a>
+                            <a href="javascript: void(0)" class="dropdown-item edit">Update Energy</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -44,7 +51,7 @@
     @include('layouts.footer')
 </div>
 
-<!-- Add Modal -->
+<!-- Create Energy Report Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -56,46 +63,88 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group row">
-                        <label for="example-text-input" class="col-sm-3 col-form-label">Kamar<span class="text-danger">*</span></label>
-                        <div class="col-sm-9">
-                            <input class="form-control" name="name" type="text" required autocomplete="off">
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label class="col-form-label">LWBP<span class="text-danger">*</span></label>
+                            <input class="form-control" name="lwbp" type="text" required autocomplete="off">
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="col-form-label">WBP<span class="text-danger">*</span></label>
+                            <input class="form-control" name="wbp" type="text" required autocomplete="off">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="example-text-input" class="col-sm-3 col-form-label">LWBP<span class="text-danger">*</span></label>
-                        <div class="col-sm-9">
-                            <input class="form-control" name="price" type="text" required autocomplete="off">
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label class="col-form-label">PDAM<span class="text-danger">*</span></label>
+                            <input class="form-control" name="pdam" type="text" required autocomplete="off">
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="col-form-label">Deep Well<span class="text-danger">*</span></label>
+                            <input class="form-control" name="deep_well" type="text" required autocomplete="off">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="example-text-input" class="col-sm-3 col-form-label">WBP<span class="text-danger">*</span></label>
-                        <div class="col-sm-9">
-                            <input class="form-control" name="price" type="text" required autocomplete="off">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="col-form-label">LPG/CNG<span class="text-danger">*</span></label>
+                            <input class="form-control" name="lpg" type="text" required autocomplete="off">
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="example-text-input" class="col-sm-3 col-form-label">PDAM<span class="text-danger">*</span></label>
-                        <div class="col-sm-9">
-                            <input class="form-control" name="price" type="text" required autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="example-text-input" class="col-sm-3 col-form-label">Deep Well<span class="text-danger">*</span></label>
-                        <div class="col-sm-9">
-                            <input class="form-control" name="price" type="text" required autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label for="example-text-input" class="col-sm-3 col-form-label">LPG/CNG<span class="text-danger">*</span></label>
-                        <div class="col-sm-9">
-                            <input class="form-control" name="unit" type="text" required autocomplete="off">
+                        <div class="form-group col">
+                            <label class="col-form-label">Occupancy<span class="text-danger">*</span></label>
+                            <input class="form-control" name="occupancy" type="text" required autocomplete="off">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary waves-effect waves-light" data-dismiss="modal">Close</button>
-                    <button type="buttom" class="btn btn-primary waves-effect waves-light" data-dismiss="modal">Submit</button>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Update Energy Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="edit-record-form">
+                <div class="modal-header">
+                    <h5 class="modal-title m-0">Update Energy</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label class="col-form-label">LWBP<span class="text-danger">*</span></label>
+                            <input class="form-control" name="lwbp" type="text" required autocomplete="off">
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="col-form-label">WBP<span class="text-danger">*</span></label>
+                            <input class="form-control" name="wbp" type="text" required autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label class="col-form-label">PDAM<span class="text-danger">*</span></label>
+                            <input class="form-control" name="pdam" type="text" required autocomplete="off">
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="col-form-label">Deep Well<span class="text-danger">*</span></label>
+                            <input class="form-control" name="deep_well" type="text" required autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label class="col-form-label">LPG/CNG<span class="text-danger">*</span></label>
+                            <input class="form-control" name="lpg" type="text" required autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect waves-light" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Update</button>
                 </div>
             </form>
         </div>

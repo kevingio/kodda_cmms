@@ -9,7 +9,7 @@ use Yajra\Datatables\Datatables;
 class Job extends Model
 {
     use SoftDeletes;
-    
+
     public $timestamps = false;
 
     /**
@@ -52,8 +52,8 @@ class Job extends Model
      */
     public function datatable()
     {
-        $datas = Self::all();
-        return Datatables::of($datas)
+        $results = Self::all();
+        return Datatables::of($results)
             ->editColumn('department', function ($data) {
                 return $data->department->name;
             })

@@ -47,7 +47,6 @@ $(document).ready(function () {
                     value: JSON.stringify(maintenancePage.dataSetInventory)
                 };
                 data.push(temp);
-                console.log(data);
                 $.ajax({
                     url: '/maintenance/' + data_id,
                     data: data,
@@ -67,7 +66,7 @@ $(document).ready(function () {
                             swal(
                                 "Oops!",
                                 "Something went wrong, please refresh the page!",
-                                "danger"
+                                "error"
                             );
                         }
                     }

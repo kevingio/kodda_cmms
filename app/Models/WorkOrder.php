@@ -186,11 +186,11 @@ class WorkOrder extends Model
     public function datatable($type)
     {
         if($type == 'history') {
-            $datas = Self::with(['assignor', 'location.floor'])->orderBy('created_at', 'desc')->get();
+            $results = Self::with(['assignor', 'location.floor'])->orderBy('created_at', 'desc')->get();
         } else {
-            $datas = Self::with(['assignor', 'location.floor'])->whereDate('created_at', date('Y-m-d'))->orderBy('created_at', 'desc')->get();
+            $results = Self::with(['assignor', 'location.floor'])->whereDate('created_at', date('Y-m-d'))->orderBy('created_at', 'desc')->get();
         }
-        return Datatables::of($datas)
+        return Datatables::of($results)
             ->editColumn('task', function ($data) {
                 $html = '';
                 if(!empty($data->image)) {

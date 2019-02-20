@@ -176,8 +176,8 @@ class MaintenanceReport extends Model
      */
     public function datatable($date)
     {
-        $datas = Self::with(['equipment.location.floor', 'equipment.model'])->whereDate('created_at', $date)->get();
-        return Datatables::of($datas)
+        $results = Self::with(['equipment.location.floor', 'equipment.model'])->whereDate('created_at', $date)->get();
+        return Datatables::of($results)
             ->editColumn('location', function ($data) {
                 return $data->equipment->location->area . ' - ' . $data->equipment->location->floor->description;
             })

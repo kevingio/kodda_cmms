@@ -59,8 +59,8 @@ class PoolLog extends Model
      */
     public function datatable()
     {
-        $datas = Self::with('done_by')->latest()->get();
-        return Datatables::of($datas)
+        $results = Self::with('done_by')->latest()->get();
+        return Datatables::of($results)
             ->editColumn('date', function ($data) {
                 return date('d M Y', strtotime($data->created_at));
             })

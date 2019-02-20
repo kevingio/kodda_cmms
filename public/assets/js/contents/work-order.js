@@ -297,7 +297,6 @@ $(document).ready(function () {
                 if(val.length == 2) {
                     val.forEach((item) => {
                         if(!item.match('/^\d+$/') || item == '') {
-                            console.log('ok');
                             $(this).addClass('bcolor-danger');
                         }
                     });

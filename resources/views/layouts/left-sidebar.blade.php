@@ -61,7 +61,6 @@
                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-desktop-tower"></i><span> Master Data <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
                     <ul class="submenu">
                         <li><a href="{{ route('master.department.index') }}">Department</a></li>
-                        <!-- <li><a href="{{ route('master.energy.index') }}">Energy</a></li> -->
                         <li><a href="{{ route('master.location.index') }}">Location</a></li>
                         <li><a href="{{ route('master.inventory-model.index') }}">Inventory Category</a></li>
                         <li><a href="{{ route('master.equipment-model.index') }}">Equipment & Maintenance</a></li>

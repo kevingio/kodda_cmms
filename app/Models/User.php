@@ -96,8 +96,8 @@ class User extends Authenticatable
      */
     public function datatable()
     {
-        $datas = Self::with(['department', 'job', 'role'])->where('role_id', '!=', 1)->get();
-        return Datatables::of($datas)
+        $results = Self::with(['department', 'job', 'role'])->where('role_id', '!=', 1)->get();
+        return Datatables::of($results)
             ->editColumn('name', function ($data) {
                 $image = asset('assets/images/default-photo.png');
                 if(!empty($data->avatar)) {

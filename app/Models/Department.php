@@ -9,7 +9,7 @@ use Yajra\Datatables\Datatables;
 class Department extends Model
 {
     use SoftDeletes;
-    
+
     public $timestamps = false;
 
     /**
@@ -43,8 +43,8 @@ class Department extends Model
      */
     public function datatable()
     {
-        $datas = Self::all();
-        return Datatables::of($datas)
+        $results = Self::all();
+        return Datatables::of($results)
             ->editColumn('action', function ($data) {
                 $html = '
                 <a href="javascript: void(0)" class="btn btn-warning edit-department waves-effect waves-light" data-id="'.encrypt($data->id).'" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Edit">

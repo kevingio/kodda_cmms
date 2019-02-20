@@ -50,8 +50,8 @@ class MaintenanceTask extends Model
      */
     public function datatable()
     {
-        $datas = Self::with('equipment_model')->orderBy('created_at', 'desc')->get();
-        return Datatables::of($datas)
+        $results = Self::with('equipment_model')->orderBy('created_at', 'desc')->get();
+        return Datatables::of($results)
             ->editColumn('model', function ($data) {
                 return $data->equipment_model->name;
             })

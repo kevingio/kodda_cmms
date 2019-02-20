@@ -15,10 +15,10 @@ class CreateGasReportsTable extends Migration
     {
         Schema::create('gas_reports', function (Blueprint $table) {
             $table->increments('id');
-            $table->bigInteger('gas');
-            $table->bigInteger('gas_comsumption');
-            $table->bigInteger('gas_price');
-            $table->bigInteger('gas_month_to_date');
+            $table->float('value', 15, 2);
+            $table->float('consumption', 15, 2);
+            $table->float('price', 15, 2);
+            $table->float('month_to_date', 15, 2);
             $table->timestamps();
         });
     }

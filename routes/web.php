@@ -20,11 +20,6 @@ Route::get('login',  'Auth\LoginController@showLoginForm');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::middleware('auth')->group(function () {
-
-    Route::get('/energy-report', function () {
-        return view('energy-report.index');
-    })->name('energy-report.index');
-
     Route::get('/', 'HomeController@index')->name('home');
     Route::patch('profile','HomeController@updateProfile')->name('update-profile');
     Route::resource('inventory','InventoryController')->middleware('role:1,2,6');
@@ -33,7 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('work-report','WorkReportController');
     Route::resource('work-order','WorkOrderController')->middleware('role:1,2,3,4');
     Route::resource('maintenance','MaintenanceReportController')->middleware('role:1,2,4');
-    Route::resource('pool-management','PoolLogController');
+    Route::resource('pool-management','PoolLogController')->middleware('role:1,2,4');
+    Route::resource('energy-report', 'EnergyController')->middleware('role:1,2,4');
 });
 
 Route::prefix('master-data')->name('master.')->middleware(['auth', 'role:1,2'])->group(function () {

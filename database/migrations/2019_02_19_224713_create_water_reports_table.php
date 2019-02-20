@@ -15,15 +15,15 @@ class CreateWaterReportsTable extends Migration
     {
         Schema::create('water_reports', function (Blueprint $table) {
             $table->increments('id');
-            $table->bigInteger('pdam');
-            $table->bigInteger('pdam_comsumption');
-            $table->bigInteger('pdam_price');
-            $table->bigInteger('pdam_month_to_date');
-            $table->bigInteger('deep_well');
-            $table->bigInteger('deep_well_comsumption');
-            $table->bigInteger('deep_well_total');
-            $table->bigInteger('deep_well_month_to_date');
-            $table->bigInteger('occupancy');
+            $table->float('pdam', 15, 2);
+            $table->float('pdam_consumption', 15, 2);
+            $table->float('pdam_price', 15, 2);
+            $table->float('pdam_month_to_date', 15, 2);
+            $table->float('deep_well', 15, 2);
+            $table->float('deep_well_consumption', 15, 2);
+            $table->float('deep_well_total', 15, 2);
+            $table->float('deep_well_month_to_date', 15, 2);
+            $table->integer('occupancy');
             $table->float('water_per_room', 15, 2);
             $table->timestamps();
         });

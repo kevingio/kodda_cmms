@@ -21,10 +21,10 @@ class CreateElectricityReportsTable extends Migration
             $table->float('wbp', 11, 2);
             $table->float('wbp_total', 15, 2);
             $table->float('wbp_price', 15, 2);
-            $table->float('price_total', 15, 2);
+            $table->float('cost_total', 15, 2);
             $table->integer('occupancy');
-            $table->float('electriciy_per_room', 11, 2);
-            $table->float('month_to_date_price', 15, 2);
+            $table->float('electricity_per_room', 11, 2);
+            $table->float('month_to_date_cost', 15, 2);
             $table->timestamps();
         });
     }
