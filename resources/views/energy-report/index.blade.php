@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col">
                     <div class="page-title-box">
-                        <h4 class="page-title">Energy Report</h4>
+                        <h4 class="page-title" @if(in_array(auth()->user()->role_id, [1,2])) id="admin" @endif>Energy Report</h4>
                     </div>
                 </div>
                 <div class="col text-right">

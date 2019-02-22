@@ -52,8 +52,8 @@ class EnergyController extends Controller
         $energy = $this->energy->first();
         DB::transaction(function () use ($energy, $data) {
             $this->electricity->makeReport($data, $energy);
-            // $this->gas->makeReport($data, $energy);
-            // $this->water->makeReport($data, $energy);
+            $this->gas->makeReport($data, $energy);
+            $this->water->makeReport($data, $energy);
         }, 3);
         return response()->json(['status' => 200]);
     }
@@ -122,6 +122,9 @@ class EnergyController extends Controller
                 break;
             case 'water':
                 return $this->water->datatable($request->month, $request->year);
+                break;
+            case 'select2':
+                return $this->{$request->type}->getYearList();
                 break;
         }
     }

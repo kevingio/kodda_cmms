@@ -7,6 +7,8 @@
         </select>
     </div>
     <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
-        <select class="form-control" name="year"></select>
+        <select class="form-control" name="year">
+            <option value="{{ date('Y') }}" selected>{{ date('Y') }}</option>
+        </select>
     </div>
 </div>

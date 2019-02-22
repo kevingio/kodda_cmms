@@ -118,7 +118,7 @@ class MaintenanceReport extends Model
      */
     public function generateMaintenanceNumber()
     {
-        $last_record = Self::latest()->value('mt_number');
+        $last_record = $this->latest()->value('mt_number');
         if($last_record) {
             $substring = substr($last_record, 2, 5);
             $toInt = intval($substring);
@@ -161,7 +161,7 @@ class MaintenanceReport extends Model
         if($month < $equipment->maintenance_period) {
             return;
         } else {
-            Self::updateOrCreate([
+            $this->updateOrCreate([
                 'mt_number' => $this->generateMaintenanceNumber(),
                 'equipment_id' => $equipment->id,
                 'created_at' => $this->getNextMaintenanceDate($equipment->created_at, $iteration * $equipment->maintenance_period)
@@ -176,7 +176,7 @@ class MaintenanceReport extends Model
      */
     public function datatable($date)
     {
-        $results = Self::with(['equipment.location.floor', 'equipment.model'])->whereDate('created_at', $date)->get();
+        $results = $this->with(['equipment.location.floor', 'equipment.model'])->whereDate('created_at', $date)->get();
         return Datatables::of($results)
             ->editColumn('location', function ($data) {
                 return $data->equipment->location->area . ' - ' . $data->equipment->location->floor->description;

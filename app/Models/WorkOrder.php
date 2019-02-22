@@ -139,7 +139,7 @@ class WorkOrder extends Model
      */
     public function generateWorkOrderNumber()
     {
-        $last_record = Self::latest()->value('wo_number');
+        $last_record = $this->latest()->value('wo_number');
         if($last_record) {
             $substring = substr($last_record, 2, 5);
             $toInt = intval($substring);
@@ -158,13 +158,13 @@ class WorkOrder extends Model
     {
         $role = auth()->user()->role_id;
         if($role == 3) {
-            $statuses = Self::select('status', DB::raw('count(*) as count'))
+            $statuses = $this->select('status', DB::raw('count(*) as count'))
                                 ->groupBy('status')
                                 ->where('created_by', auth()->user()->id)
                                 ->whereDate('created_at', date('Y-m-d'))
                                 ->get();
         } else {
-            $statuses = Self::select('status', DB::raw('count(*) as count'))
+            $statuses = $this->select('status', DB::raw('count(*) as count'))
                             ->groupBy('status')
                             ->whereDate('created_at', date('Y-m-d'))
                             ->get();
@@ -186,9 +186,9 @@ class WorkOrder extends Model
     public function datatable($type)
     {
         if($type == 'history') {
-            $results = Self::with(['assignor', 'location.floor'])->orderBy('created_at', 'desc')->get();
+            $results = $this->with(['assignor', 'location.floor'])->orderBy('created_at', 'desc')->get();
         } else {
-            $results = Self::with(['assignor', 'location.floor'])->whereDate('created_at', date('Y-m-d'))->orderBy('created_at', 'desc')->get();
+            $results = $this->with(['assignor', 'location.floor'])->whereDate('created_at', date('Y-m-d'))->orderBy('created_at', 'desc')->get();
         }
         return Datatables::of($results)
             ->editColumn('task', function ($data) {

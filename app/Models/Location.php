@@ -50,7 +50,7 @@ class Location extends Model
      */
     public function datatable()
     {
-        $results = Self::with('floor')->get();
+        $results = $this->with('floor')->get();
         return Datatables::of($results)
             ->editColumn('floor', function ($data) {
                 return $data->floor->description;

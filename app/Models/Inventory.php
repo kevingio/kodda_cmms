@@ -54,7 +54,7 @@ class Inventory extends Model
      */
     public function reduceInventory($inventory)
     {
-        return Self::findOrFail($inventory->id)->decrement('qty', $inventory->qty);
+        return $this->findOrFail($inventory->id)->decrement('qty', $inventory->qty);
     }
 
     /**
@@ -63,7 +63,7 @@ class Inventory extends Model
      */
     public function datatable()
     {
-        $results = Self::with('inventory_model')->get();
+        $results = $this->with('inventory_model')->get();
         return Datatables::of($results)
             ->editColumn('model', function ($data) {
                 return $data->inventory_model->name;
@@ -99,7 +99,7 @@ class Inventory extends Model
      */
     public function select2($query)
     {
-        $data = Self::where('name', 'like', "%{$query}%")->get();
+        $data = $this->where('name', 'like', "%{$query}%")->get();
         $results = [];
         foreach ($data as $value) {
             $results[] = [

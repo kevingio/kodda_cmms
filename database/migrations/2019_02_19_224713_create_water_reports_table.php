@@ -17,11 +17,11 @@ class CreateWaterReportsTable extends Migration
             $table->increments('id');
             $table->float('pdam', 15, 2);
             $table->float('pdam_consumption', 15, 2);
-            $table->float('pdam_price', 15, 2);
+            $table->float('pdam_cost', 15, 2);
             $table->float('pdam_month_to_date', 15, 2);
             $table->float('deep_well', 15, 2);
             $table->float('deep_well_consumption', 15, 2);
-            $table->float('deep_well_total', 15, 2);
+            $table->float('deep_well_cost', 15, 2);
             $table->float('deep_well_month_to_date', 15, 2);
             $table->integer('occupancy');
             $table->float('water_per_room', 15, 2);

@@ -81,7 +81,7 @@ class InventoryReport extends Model
     */
     public function makeReport($inventory, $type, $resource_id)
     {
-        return Self::create([
+        return $this->create([
             'inventory_id' => $inventory->id,
             'mode' => 'out',
             'qty' => $inventory->qty,

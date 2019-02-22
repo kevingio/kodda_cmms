@@ -43,7 +43,7 @@ class Department extends Model
      */
     public function datatable()
     {
-        $results = Self::all();
+        $results = $this->all();
         return Datatables::of($results)
             ->editColumn('action', function ($data) {
                 $html = '

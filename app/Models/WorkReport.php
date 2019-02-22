@@ -40,7 +40,7 @@ class WorkReport extends Model
      */
     public function datatable()
     {
-        $results = Self::with('user.job.department')->orderBy('created_at', 'desc')->get();
+        $results = $this->with('user.job.department')->orderBy('created_at', 'desc')->get();
         return Datatables::of($results)
             ->editColumn('name', function ($data) {
                 return $data->user->name;

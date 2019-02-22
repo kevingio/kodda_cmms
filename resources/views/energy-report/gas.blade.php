@@ -5,9 +5,11 @@
             <th>Day</th>
             <th>Gas</th>
             <th>Comsumption</th>
-            <th>Price</th>
+            <th>Cost</th>
             <th>Gas Month to Date</th>
+            @if(in_array(auth()->user()->role_id, [1,2]))
             <th class="no-sort no-search text-center">Action</th>
+            @endif
         </tr>
     </thead>
     <tbody>

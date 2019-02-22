@@ -81,75 +81,102 @@ $(document).ready(function () {
         dtTable: {},
         init: function () {
             this.initSelect2();
-            this.initDatatable();
             this.customFunction();
+            this.initDatatable();
         },
         customFunction: function () {
-            var data_id = null;
-
-
+            $('#electricity-pane select[name="month"], #electricity-pane select[name="year"]').on('select2:select', function () {
+                electricityReportPage.dtTable.ajax.reload();
+            });
         },
         initSelect2: function () {
             $('#electricity-pane select[name=month]').select2({
                 placeholder: '-- Please Select --',
             });
-            $('#electricity-pane select[name=year]').select2({
-                placeholder: '-- Please Select --',
-                data: [
-                    {
-                        id: 2017,
-                        text: '2017'
-                    },
-                    {
-                        id: 2018,
-                        text: '2018'
-                    },
-                    {
-                        id: 2019,
-                        text: '2019'
-                    }
-                ]
+            $.post('/ajax/energy', { mode: 'select2', type: 'electricity' })
+            .done(function (response) {
+                let date = new Date();
+                $('#electricity-pane select[name=year]').select2({
+                    data: response
+                });
             });
-            $('#electricity-pane select[name=year]').val(2019).trigger('change');
         },
         initDatatable: function () {
             $table = $page.find('#electricity-datatable');
-            electricityReportPage.dtTable = $table.DataTable({
-                "aaSorting": [],
-                "processing": true,
-                "serverSide": true,
-                "searching": true,
-                "lengthChange": false,
-                "responsive": true,
-                "ajax": {
-                    url: "/ajax/energy",
-                    type: "POST",
-                    data: function (d) {
-                        d.mode = 'electricity';
-                        d.month = $('#electricity-pane select[name=month]').val();
-                        d.year = $('#electricity-pane select[name=year]').val();
-                    }
-                },
-                "columns": [
-                    { data: 'day', name: 'day' },
-                    { data: 'lwbp', name: 'lwbp' },
-                    { data: 'lwbp_total', name: 'lwbp_total' },
-                    { data: 'lwbp_price', name: 'lwbp_price' },
-                    { data: 'wbp', name: 'wbp' },
-                    { data: 'wbp_total', name: 'wbp_total' },
-                    { data: 'wbp_price', name: 'wbp_price' },
-                    { data: 'cost_total', name: 'cost_total' },
-                    { data: 'occupancy', name: 'occupancy' },
-                    { data: 'electricity_per_room', name: 'electricity_per_room' },
-                    { data: 'month_to_date_cost', name: 'month_to_date_cost' },
-                    { data: 'action', name: 'action' },
-                ],
-                "columnDefs": [
-                    { targets: 'no-sort', orderable: false },
-                    { targets: 'no-search', searchable: false },
-                    { targets: 'text-center', className: 'text-center' },
-                ]
-            });
+            if ($page.find('#admin').length) {
+                electricityReportPage.dtTable = $table.DataTable({
+                    "aaSorting": [],
+                    "processing": true,
+                    "serverSide": true,
+                    "searching": false,
+                    "lengthChange": false,
+                    "responsive": true,
+                    "ajax": {
+                        url: "/ajax/energy",
+                        type: "POST",
+                        data: function (d) {
+                            d.mode = 'electricity';
+                            d.month = $('#electricity-pane select[name=month]').val();
+                            d.year = $('#electricity-pane select[name=year]').val();
+                        }
+                    },
+                    "columns": [
+                        { data: 'day', name: 'day' },
+                        { data: 'lwbp', name: 'lwbp' },
+                        { data: 'lwbp_total', name: 'lwbp_total' },
+                        { data: 'lwbp_cost', name: 'lwbp_cost' },
+                        { data: 'wbp', name: 'wbp' },
+                        { data: 'wbp_total', name: 'wbp_total' },
+                        { data: 'wbp_cost', name: 'wbp_cost' },
+                        { data: 'cost_total', name: 'cost_total' },
+                        { data: 'occupancy', name: 'occupancy' },
+                        { data: 'electricity_per_room', name: 'electricity_per_room' },
+                        { data: 'month_to_date_cost', name: 'month_to_date_cost' },
+                        { data: 'action', name: 'action' },
+                    ],
+                    "columnDefs": [
+                        { targets: 'no-sort', orderable: false },
+                        { targets: 'no-search', searchable: false },
+                        { targets: 'text-center', className: 'text-center' },
+                    ]
+                });
+            } else {
+                electricityReportPage.dtTable = $table.DataTable({
+                    "aaSorting": [],
+                    "processing": true,
+                    "serverSide": true,
+                    "searching": false,
+                    "lengthChange": false,
+                    "responsive": true,
+                    "ajax": {
+                        url: "/ajax/energy",
+                        type: "POST",
+                        data: function (d) {
+                            d.mode = 'electricity';
+                            d.month = $('#electricity-pane select[name=month]').val();
+                            d.year = $('#electricity-pane select[name=year]').val();
+                        }
+                    },
+                    "columns": [
+                        { data: 'day', name: 'day' },
+                        { data: 'lwbp', name: 'lwbp' },
+                        { data: 'lwbp_total', name: 'lwbp_total' },
+                        { data: 'lwbp_cost', name: 'lwbp_cost' },
+                        { data: 'wbp', name: 'wbp' },
+                        { data: 'wbp_total', name: 'wbp_total' },
+                        { data: 'wbp_cost', name: 'wbp_cost' },
+                        { data: 'cost_total', name: 'cost_total' },
+                        { data: 'occupancy', name: 'occupancy' },
+                        { data: 'electricity_per_room', name: 'electricity_per_room' },
+                        { data: 'month_to_date_cost', name: 'month_to_date_cost' },
+                    ],
+                    "columnDefs": [
+                        { targets: 'no-sort', orderable: false },
+                        { targets: 'no-search', searchable: false },
+                        { targets: 'text-center', className: 'text-center' },
+                    ]
+                });
+            }
         },
     };
 
@@ -157,69 +184,88 @@ $(document).ready(function () {
         dtTable: {},
         init: function () {
             this.initSelect2();
-            this.initDatatable();
             this.customFunction();
+            this.initDatatable();
         },
         customFunction: function () {
-            var data_id = null;
-
-
+            $('#gas-pane select[name="month"], #gas-pane select[name="year"]').on('select2:select', function () {
+                gasReportPage.dtTable.ajax.reload();
+            });
         },
         initSelect2: function () {
             $('#gas-pane select[name=month]').select2({
                 placeholder: '-- Please Select --',
             });
-            $('#gas-pane select[name=year]').select2({
-                placeholder: '-- Please Select --',
-                data: [
-                    {
-                        id: 2017,
-                        text: '2017'
-                    },
-                    {
-                        id: 2018,
-                        text: '2018'
-                    },
-                    {
-                        id: 2019,
-                        text: '2019'
-                    }
-                ]
+            $.post('/ajax/energy', { mode: 'select2', type: 'gas' })
+            .done(function (response) {
+                let date = new Date();
+                $('#gas-pane select[name=year]').select2({
+                    data: response
+                });
             });
-            $('#gas-pane select[name=year]').val(2019).trigger('change');
         },
         initDatatable: function () {
             $table = $page.find('#gas-datatable');
-            gasReportPage.dtTable = $table.DataTable({
-                "aaSorting": [],
-                "processing": true,
-                "serverSide": true,
-                "searching": true,
-                "lengthChange": false,
-                "responsive": true,
-                "ajax": {
-                    url: "/ajax/energy",
-                    type: "POST",
-                    data: function (d) {
-                        d.mode = 'gas';
-                        d.month = $('#gas-pane select[name=month]').val();
-                        d.year = $('#gas-pane select[name=year]').val();
-                    }
-                },
-                "columns": [
-                    { data: 'dat', name: 'day' },
-                    { data: 'value', name: 'value' },
-                    { data: 'consumption', name: 'consumption' },
-                    { data: 'price', name: 'price' },
-                    { data: 'month_to_date', name: 'month_to_date' },
-                    { data: 'action', name: 'action' },
-                ],
-                "columnDefs": [
-                    { targets: 'no-sort', orderable: false },
-                    { targets: 'no-search', searchable: false },
-                    { targets: 'text-center', className: 'text-center' },
-                ]
-            });
+            if($page.find('#admin').length) {
+                gasReportPage.dtTable = $table.DataTable({
+                    "aaSorting": [],
+                    "processing": true,
+                    "serverSide": true,
+                    "searching": false,
+                    "lengthChange": false,
+                    "responsive": true,
+                    "ajax": {
+                        url: "/ajax/energy",
+                        type: "POST",
+                        data: function (d) {
+                            d.mode = 'gas';
+                            d.month = $('#gas-pane select[name=month]').val();
+                            d.year = $('#gas-pane select[name=year]').val();
+                        }
+                    },
+                    "columns": [
+                        { data: 'day', name: 'day' },
+                        { data: 'value', name: 'value' },
+                        { data: 'consumption', name: 'consumption' },
+                        { data: 'cost', name: 'cost' },
+                        { data: 'month_to_date', name: 'month_to_date' },
+                        { data: 'action', name: 'action' },
+                    ],
+                    "columnDefs": [
+                        { targets: 'no-sort', orderable: false },
+                        { targets: 'no-search', searchable: false },
+                    ]
+                });
+            } else {
+                gasReportPage.dtTable = $table.DataTable({
+                    "aaSorting": [],
+                    "processing": true,
+                    "serverSide": true,
+                    "searching": false,
+                    "lengthChange": false,
+                    "responsive": true,
+                    "ajax": {
+                        url: "/ajax/energy",
+                        type: "POST",
+                        data: function (d) {
+                            d.mode = 'gas';
+                            d.month = $('#gas-pane select[name=month]').val();
+                            d.year = $('#gas-pane select[name=year]').val();
+                        }
+                    },
+                    "columns": [
+                        { data: 'day', name: 'day' },
+                        { data: 'value', name: 'value' },
+                        { data: 'consumption', name: 'consumption' },
+                        { data: 'cost', name: 'cost' },
+                        { data: 'month_to_date', name: 'month_to_date' },
+                    ],
+                    "columnDefs": [
+                        { targets: 'no-sort', orderable: false },
+                        { targets: 'no-search', searchable: false },
+                    ]
+                });
+            }
         },
     };
 
@@ -227,74 +273,98 @@ $(document).ready(function () {
         dtTable: {},
         init: function () {
             this.initSelect2();
-            this.initDatatable();
             this.customFunction();
+            this.initDatatable();
         },
         customFunction: function () {
-            var data_id = null;
-
-
+            $('#water-pane select[name="month"], #water-pane select[name="year"]').on('select2:select', function () {
+                waterReportPage.dtTable.ajax.reload();
+            });
         },
         initSelect2: function () {
             $('#water-pane select[name=month]').select2({
                 placeholder: '-- Please Select --',
             });
-            $('#water-pane select[name=year]').select2({
-                placeholder: '-- Please Select --',
-                data: [
-                    {
-                        id: 2017,
-                        text: '2017'
-                    },
-                    {
-                        id: 2018,
-                        text: '2018'
-                    },
-                    {
-                        id: 2019,
-                        text: '2019'
-                    }
-                ]
+            $.post('/ajax/energy', { mode: 'select2', type: 'water' })
+            .done(function (response) {
+                let date = new Date();
+                $('#water-pane select[name=year]').select2({
+                    data: response
+                });
             });
-            $('#water-pane select[name=year]').val(2019).trigger('change');
         },
         initDatatable: function () {
             $table = $page.find('#water-datatable');
-            waterReportPage.dtTable = $table.DataTable({
-                "aaSorting": [],
-                "processing": true,
-                "serverSide": true,
-                "searching": true,
-                "lengthChange": false,
-                "responsive": true,
-                "ajax": {
-                    url: "/ajax/energy",
-                    type: "POST",
-                    data: function (d) {
-                        d.mode = 'water';
-                        d.month = $('#water-pane select[name=month]').val();
-                        d.year = $('#water-pane select[name=year]').val();
-                    }
-                },
-                "columns": [
-                    { data: 'day', name: 'day' },
-                    { data: 'pdam', name: 'pdam' },
-                    { data: 'pdam_consuption', name: 'pdam_consuption' },
-                    { data: 'pdam_price', name: 'pdam_price' },
-                    { data: 'pdam_month_to_date', name: 'pdam_month_to_date' },
-                    { data: 'deep_well', name: 'deep_well' },
-                    { data: 'deep_well_consumption', name: 'deep_well_consumption' },
-                    { data: 'deep_well_total', name: 'deep_well_total' },
-                    { data: 'occupancy', name: 'occupancy' },
-                    { data: 'water_per_room', name: 'water_per_room' },
-                    { data: 'action', name: 'action' },
-                ],
-                "columnDefs": [
-                    { targets: 'no-sort', orderable: false },
-                    { targets: 'no-search', searchable: false },
-                    { targets: 'text-center', className: 'text-center' },
-                ]
-            });
+            if($page.find('#admin').length) {
+                waterReportPage.dtTable = $table.DataTable({
+                    "aaSorting": [],
+                    "processing": true,
+                    "serverSide": true,
+                    "searching": false,
+                    "lengthChange": false,
+                    "responsive": true,
+                    "ajax": {
+                        url: "/ajax/energy",
+                        type: "POST",
+                        data: function (d) {
+                            d.mode = 'water';
+                            d.month = $('#water-pane select[name=month]').val();
+                            d.year = $('#water-pane select[name=year]').val();
+                        }
+                    },
+                    "columns": [
+                        { data: 'day', name: 'day' },
+                        { data: 'pdam', name: 'pdam' },
+                        { data: 'pdam_consumption', name: 'pdam_consumption' },
+                        { data: 'pdam_cost', name: 'pdam_cost' },
+                        { data: 'pdam_month_to_date', name: 'pdam_month_to_date' },
+                        { data: 'deep_well', name: 'deep_well' },
+                        { data: 'deep_well_consumption', name: 'deep_well_consumption' },
+                        { data: 'deep_well_cost', name: 'deep_well_cost' },
+                        { data: 'occupancy', name: 'occupancy' },
+                        { data: 'water_per_room', name: 'water_per_room' },
+                        { data: 'action', name: 'action' },
+                    ],
+                    "columnDefs": [
+                        { targets: 'no-sort', orderable: false },
+                        { targets: 'no-search', searchable: false },
+                    ]
+                });
+            } else {
+                waterReportPage.dtTable = $table.DataTable({
+                    "aaSorting": [],
+                    "processing": true,
+                    "serverSide": true,
+                    "searching": false,
+                    "lengthChange": false,
+                    "responsive": true,
+                    "ajax": {
+                        url: "/ajax/energy",
+                        type: "POST",
+                        data: function (d) {
+                            d.mode = 'water';
+                            d.month = $('#water-pane select[name=month]').val();
+                            d.year = $('#water-pane select[name=year]').val();
+                        }
+                    },
+                    "columns": [
+                        { data: 'day', name: 'day' },
+                        { data: 'pdam', name: 'pdam' },
+                        { data: 'pdam_consumption', name: 'pdam_consumption' },
+                        { data: 'pdam_cost', name: 'pdam_cost' },
+                        { data: 'pdam_month_to_date', name: 'pdam_month_to_date' },
+                        { data: 'deep_well', name: 'deep_well' },
+                        { data: 'deep_well_consumption', name: 'deep_well_consumption' },
+                        { data: 'deep_well_cost', name: 'deep_well_cost' },
+                        { data: 'occupancy', name: 'occupancy' },
+                        { data: 'water_per_room', name: 'water_per_room' },
+                    ],
+                    "columnDefs": [
+                        { targets: 'no-sort', orderable: false },
+                        { targets: 'no-search', searchable: false },
+                    ]
+                });
+            }
         },
     };
 

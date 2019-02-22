@@ -87,7 +87,7 @@ class User extends Authenticatable
      */
     public function getUserByRole($role_id)
     {
-        return Self::where('role_id', $role_id)->where('id', '!=', auth()->user()->id)->get();
+        return $this->where('role_id', $role_id)->where('id', '!=', auth()->user()->id)->get();
     }
 
     /**
@@ -96,7 +96,7 @@ class User extends Authenticatable
      */
     public function datatable()
     {
-        $results = Self::with(['department', 'job', 'role'])->where('role_id', '!=', 1)->get();
+        $results = $this->with(['department', 'job', 'role'])->where('role_id', '!=', 1)->get();
         return Datatables::of($results)
             ->editColumn('name', function ($data) {
                 $image = asset('assets/images/default-photo.png');

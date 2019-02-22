@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Yajra\Datatables\Datatables;
+use Carbon\Carbon;
 
 class ElectricityReport extends Model
 {
@@ -15,10 +16,10 @@ class ElectricityReport extends Model
     protected $fillable = [
         'lwbp',
         'lwbp_total',
-        'lwbp_price',
+        'lwbp_cost',
         'wbp',
         'wbp_total',
-        'wbp_price',
+        'wbp_cost',
         'cost_total',
         'occupancy',
         'electricity_per_room',
@@ -47,12 +48,12 @@ class ElectricityReport extends Model
     }
 
     /**
-     * Calculate LWBP Price
+     * Calculate LWBP Cost
      *
      * @param float $lwbp
      * @return float
      */
-    public function calculateLwbpPrice($lwbp)
+    public function calculateLwbpCost($lwbp)
     {
         $dayDiff = date('d') - date('d', strtotime('-1 day'));
         $x = 2000;
@@ -62,7 +63,7 @@ class ElectricityReport extends Model
     /**
      * Calculate WBP Total
      *
-     * @return float $wbp
+     * @return float
      */
     public function calculateWbpTotal()
     {
@@ -72,12 +73,12 @@ class ElectricityReport extends Model
     }
 
     /**
-     * Calculate WBP Price
+     * Calculate WBP Cost
      *
      * @param float $wbp
      * @return float
      */
-    public function calculateWbpPrice($wbp)
+    public function calculateWbpCost($wbp)
     {
         $dayDiff = date('d') - date('d', strtotime('-1 day'));
         $x = 2000;
@@ -92,7 +93,7 @@ class ElectricityReport extends Model
      */
     public function calculateMonthToDateCost($current_cost)
     {
-        $lastRecords = Self::whereMonth('created_at', date('d'))->get();
+        $lastRecords = Self::whereMonth('created_at', date('m'))->get();
         $monthToDateCost = 0;
         foreach ($lastRecords as $record) {
            $monthToDateCost += $record->cost_total;
@@ -104,20 +105,47 @@ class ElectricityReport extends Model
     /**
      * Make new electricity report
      *
-     * @param array $data
+     * @param array $input
+     * @param App\Models\Energy $energy
      */
     public function makeReport($input, $energy) {
         $data['lwbp'] = $input['lwbp'];
         $data['wbp'] = $input['wbp'];
         $data['occupancy'] = $input['occupancy'];
         $data['lwbp_total'] = $this->calculateLwbpTotal();
-        $data['lwbp_price'] = $this->calculateLwbpPrice($energy->lwbp);
+        $data['lwbp_cost'] = $this->calculateLwbpCost($energy->lwbp);
         $data['wbp_total'] = $this->calculateWbpTotal();
-        $data['wbp_price'] = $this->calculateWbpPrice($energy->wbp);
-        $data['cost_total'] = $data['lwbp_price'] + $data['wbp_price'];
+        $data['wbp_cost'] = $this->calculateWbpCost($energy->wbp);
+        $data['cost_total'] = $data['lwbp_cost'] + $data['wbp_cost'];
         $data['electricity_per_room'] = $data['cost_total'] / $data['occupancy'];
         $data['month_to_date_cost'] = $this->calculateMonthToDateCost($data['cost_total']);
         $this->updateOrCreate($data);
+    }
+
+    /**
+     * Get year list from submitted report
+     *
+     * @return array $years
+     */
+    public function getYearList() {
+        $results = $this
+                    ->get(['id'])
+                    ->groupBy(function ($value) {
+                        return Carbon::parse($value->created_at)->format('Y');
+                    });
+        if(!$results) {
+            $years = [
+                'id' => date('Y'),
+                'text' => date('Y')
+            ];
+        }
+        foreach ($results as $key => $result) {
+            $years[] = [
+                'id' => $key,
+                'text' => $key
+            ];
+        }
+        return $years;
     }
 
     /**
@@ -126,7 +154,7 @@ class ElectricityReport extends Model
      */
     public function datatable($month, $year)
     {
-        $results = $this->whereMonth('created_at', $month)->whereYear('created_at', $year)->get();
+        $results = $this->whereMonth('created_at', $month)->whereYear('created_at', $year)->latest()->get();
         return Datatables::of($results)
             ->editColumn('day', function ($data) {
                 return date('d', strtotime($data->created_at));
@@ -136,7 +164,7 @@ class ElectricityReport extends Model
                 <a href="javascript: void(0)" class="btn btn-warning edit waves-effect waves-light" data-id="' . encrypt($data->id) . '" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Edit">
                     <i class="mdi mdi-pencil"></i>
                 </a>';
-                return $html;
+                return in_array(auth()->user()->role_id, [1,2]) ? $html : '';
             })
             ->rawColumns(['action'])
             ->make(true);

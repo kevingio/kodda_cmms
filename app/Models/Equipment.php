@@ -66,7 +66,7 @@ class Equipment extends Model
      */
     public function datatable()
     {
-        $results = Self::with(['model', 'location.floor'])->get();
+        $results = $this->with(['model', 'location.floor'])->get();
         return Datatables::of($results)
             ->editColumn('model', function ($data) {
                 return $data->model->name;
@@ -100,7 +100,7 @@ class Equipment extends Model
      */
     public function maintenance()
     {
-        $results = Self::with(['model', 'location.floor'])->get();
+        $results = $this->with(['model', 'location.floor'])->get();
         $events = [];
         foreach ($results as $data) {
             $start_date = date('Y-m-d', strtotime('+' . $data->maintenance_period . ' month', strtotime($data->created_at)));
