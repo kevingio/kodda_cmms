@@ -5,13 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use App\Models\WorkOrder;
+use App\Models\PoolLog;
+use App\Models\InventoryReport;
 use Image;
+use PDF;
 
 class HomeController extends Controller
 {
 
-    function __construct(User $user) {
+    function __construct(User $user, WorkOrder $workOrder, PoolLog $poolLog, InventoryReport $inventory) {
         $this->user = $user;
+        $this->workOrder = $workOrder;
+        $this->log = $poolLog;
+        $this->inventory = $inventory;
     }
 
     /**
@@ -28,10 +35,12 @@ class HomeController extends Controller
             case 6:
                 return redirect()->route('inventory.index');
                 break;
-            default:
-                return view('dashboard.index');
-                break;
         }
+        $workOrderStatus = $this->workOrder->getStatusToday();
+        $poolLog = $this->log->latest()->first();
+        $inventoryIn = $this->inventory->with('inventory.inventory_model')->where('mode', 'in')->whereMonth('created_at', date('m'))->get();
+        $inventoryOut = $this->inventory->with('inventory.inventory_model')->where('mode', 'out')->whereMonth('created_at', date('m'))->get();
+        return view('dashboard.index', compact('workOrderStatus', 'poolLog', 'inventoryIn', 'inventoryOut'));
     }
 
     /**
@@ -56,5 +65,14 @@ class HomeController extends Controller
         }
         $user->update($data);
         return response()->json(['name' => $data['name'], 'avatar' => $request->hasFile('avatar') ? $path : null]);
+    }
+
+    public function export()
+    {
+        $data['workOrderStatus'] = $this->workOrder->getStatusToday();
+        $data['poolLog'] = $this->log->latest()->first();
+        $pdf = PDF::loadView('pdf.summary', $data);
+        return $pdf->download('summary.pdf');
+        // return view('pdf.summary', compact($data));
     }
 }

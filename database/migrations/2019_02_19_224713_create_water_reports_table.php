@@ -15,6 +15,7 @@ class CreateWaterReportsTable extends Migration
     {
         Schema::create('water_reports', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('energy_id');
             $table->float('pdam', 15, 2);
             $table->float('pdam_consumption', 15, 2);
             $table->float('pdam_cost', 15, 2);

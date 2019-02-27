@@ -50,6 +50,9 @@
                 <li>
                     <a href="{{ route('work-report.index') }}" class="waves-effect @if(request()->is('work-report/*')) active @endif"><i class="mdi mdi-file-document"></i><span> Daily Activities </span></a>
                 </li>
+                <!-- <li>
+                    <a href="{{ route('work-report.index') }}" class="waves-effect @if(request()->is('work-report/*')) active @endif"><i class="mdi mdi-account-network"></i><span> Work Summary </span></a>
+                </li> -->
                 @endif
 
                 @if(in_array(auth()->user()->role_id, [1,2]))

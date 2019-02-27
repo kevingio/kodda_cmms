@@ -15,6 +15,7 @@ class CreateElectricityReportsTable extends Migration
     {
         Schema::create('electricity_reports', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('energy_id');
             $table->float('lwbp', 11, 2);
             $table->float('lwbp_total', 15, 2);
             $table->float('lwbp_cost', 15, 2);

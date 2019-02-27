@@ -23,8 +23,12 @@ $(document).ready(function () {
                     "success"
                 );
             },
-            error: function(response) {
-                swal("Oops", 'Something went wrong, please refresh the page!', "error");
+            error: function () {
+                swal(
+                    "Oops!",
+                    "Something went wrong!",
+                    "error"
+                );
             }
         });
     });
@@ -37,5 +41,34 @@ $(document).ready(function () {
             }
             reader.readAsDataURL(this.files[0]);
         }
-    })
+    });
+
+    $('#change-password-form').on('submit', function (e) {
+        e.preventDefault();
+        var data = $(this).serializeArray();
+        data.push({ name: '_method', value: 'PATCH' });
+        $.ajax({
+            url: '/change-password/' + data[2].value,
+            data: data,
+            type: 'POST',
+            success: function (response) {
+                if (response.status == 200) {
+                    $(this).find("input").val('');
+                    $('button.close').click();
+                    swal(
+                        "Success!",
+                        "Password changed!",
+                        "success"
+                    );
+                }
+            },
+            error: function (response) {
+                swal(
+                    "Oops!",
+                    "Something went wrong!" + response.responseJSON.message,
+                    "error"
+                );
+            }
+        });
+    });
 });

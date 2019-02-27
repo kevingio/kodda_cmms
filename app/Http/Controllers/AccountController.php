@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Department;
 use App\Models\Job;
@@ -51,8 +52,8 @@ class AccountController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:user|without_spaces|username',
-            'email' => 'required|unique:user|email'
+            'username' => 'unique:users|alpha_dash',
+            'email' => 'unique:users|email'
         ]);
         $data = $request->except('avatar');
         $data['password'] = bcrypt($data['password']);
@@ -101,8 +102,7 @@ class AccountController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'username' => 'required|unique:user|without_spaces|username',
-            'email' => 'required|unique:user|email'
+            'username' => 'alpha_dash',
         ]);
         $data = $request->all();
         $this->user->findOrFail(decrypt($id))->update($data);
@@ -133,5 +133,25 @@ class AccountController extends Controller
                 return $this->user->datatable();
                 break;
         }
+    }
+
+    /**
+     * Change account password
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param integer $id
+     * @return \Illuminate\Http\Response
+     */
+    public function changePassword(Request $request, $id)
+    {
+        $user = $this->user->findOrFail(decrypt($id));
+        if($request->has('old_password')) {
+            if(!Hash::check($request->old_password, $user->password)) {
+                return response()->json(['message' => ' Old password is not match!'], 500);
+            }
+        }
+        $data['password'] = bcrypt($request->password);
+        $user->update($data);
+        return response()->json(['status' => 200]);
     }
 }

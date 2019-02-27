@@ -1,7 +1,6 @@
 @extends('layouts.master')
 @section('content')
 <div class="content-page" id="work-order-page">
-    <!-- Start content -->
     <div class="content">
         <div class="container-fluid">
 

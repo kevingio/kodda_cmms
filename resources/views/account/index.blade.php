@@ -26,9 +26,9 @@
                             <table id="account-datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Department</th>
-                                    <th>Job Title</th>
+                                    <th class="no-sort">Name</th>
+                                    <th class="no-sort">Department</th>
+                                    <th class="no-sort">Job Title</th>
                                     <th class="no-sort no-search">Contact</th>
                                     <th class="no-sort">Permission</th>
                                     <th width="180">Created</th>
@@ -224,48 +224,35 @@
 <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title m-0">Reset Password</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group row">
-                    <label for="example-text-input" class="col-sm-3 col-form-label">New Password<span class="text-danger">*</span></label>
-                    <div class="col-sm-9">
-                        <div class="input-group">
-                            <input type="password" name="password" class="form-control" required>
-                            <div class="input-group-append waves-effect waves-dark">
-                                <span class="input-group-text">
-                                    <a href="javascript: void(0)">
-                                        <i class="mdi mdi-eye-off"></i>
-                                    </a>
-                                </span>
+            <form id="reset-password-form">
+                <div class="modal-header">
+                    <h5 class="modal-title m-0">Reset Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label for="example-text-input" class="col-sm-3 col-form-label">New Password<span class="text-danger">*</span></label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input type="password" name="password" class="form-control" required>
+                                <div class="input-group-append waves-effect waves-dark">
+                                    <span class="input-group-text">
+                                        <span href="javascript: void(0)">
+                                            <i class="mdi mdi-eye-off"></i>
+                                        </span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="example-text-input" class="col-sm-3 col-form-label">Retype Password<span class="text-danger">*</span></label>
-                    <div class="col-sm-9">
-                        <div class="input-group">
-                            <input type="password" name="retype" class="form-control" required>
-                            <div class="input-group-append waves-effect waves-dark">
-                                <span class="input-group-text">
-                                    <a href="javascript: void(0)">
-                                        <i class="mdi mdi-eye-off"></i>
-                                    </a>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
+            </form>
         </div>
     </div>
 </div>

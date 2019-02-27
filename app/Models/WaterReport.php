@@ -14,6 +14,7 @@ class WaterReport extends Model
      * @var array
      */
     protected $fillable = [
+        'energy_id',
         'pdam',
         'pdam_consumption',
         'pdam_cost',
@@ -41,9 +42,13 @@ class WaterReport extends Model
      * @param float $current_consumption
      * @return float
      */
-    public function calculatePdamConsumption($current_consumption)
+    public function calculatePdamConsumption($current_consumption, $report_id = null)
     {
-        $lastRecord = $this->first();
+        if($report_id) {
+            $lastRecord = $this->find($report_id-1);
+        } else {
+            $lastRecord = $this->first();
+        }
         return $lastRecord ? $current_consumption - $lastRecord->pdam : $current_consumption;
     }
 
@@ -65,9 +70,13 @@ class WaterReport extends Model
      * @param float $current_cost
      * @return float
      */
-    public function calculatePdamMonthToDateCost($current_cost)
+    public function calculatePdamMonthToDateCost($current_cost, $report_id = null)
     {
-        $lastRecords = Self::whereMonth('created_at', date('m'))->get();
+        if($report_id) {
+            $lastRecords = Self::whereMonth('created_at', date('m'))->where('id', '!=', $report_id)->get();
+        } else {
+            $lastRecords = Self::whereMonth('created_at', date('m'))->get();
+        }
         $monthToDateCost = 0;
         foreach ($lastRecords as $record) {
            $monthToDateCost += $record->pdam_cost;
@@ -82,9 +91,13 @@ class WaterReport extends Model
      * @param float $current_consumption
      * @return float
      */
-    public function calculateDeepWellConsumption($current_consumption)
+    public function calculateDeepWellConsumption($current_consumption, $report_id = null)
     {
-        $lastRecord = $this->first();
+        if($report_id) {
+            $lastRecord = $this->find($report_id-1);
+        } else {
+            $lastRecord = $this->first();
+        }
         return $lastRecord ? $current_consumption - $lastRecord->deep_well : $current_consumption;
     }
 
@@ -106,9 +119,13 @@ class WaterReport extends Model
      * @param float $current_cost
      * @return float
      */
-    public function calculateDeepWellMonthToDateCost($current_cost)
+    public function calculateDeepWellMonthToDateCost($current_cost, $report_id = null)
     {
-        $lastRecords = Self::whereMonth('created_at', date('m'))->get();
+        if($report_id) {
+            $lastRecords = Self::whereMonth('created_at', date('m'))->where('id', '!=', $report_id)->get();
+        } else {
+            $lastRecords = Self::whereMonth('created_at', date('m'))->get();
+        }
         $monthToDateCost = 0;
         foreach ($lastRecords as $record) {
            $monthToDateCost += $record->deep_well_cost;
@@ -118,22 +135,47 @@ class WaterReport extends Model
     }
 
     /**
-     * Make new water report
+     * Process input to correct field in database
      *
-     * @param array $data
+     * @param array $input
+     * @param App\Models\Energy
      */
-    public function makeReport($input, $energy) {
+    public function processInput($input, $energy, $report_id = null)
+    {
+        $data['energy_id'] = $energy->id;
         $data['occupancy'] = $input['occupancy'];
         $data['pdam'] = $input['pdam'];
-        $data['pdam_consumption'] = $this->calculatePdamConsumption($data['pdam']);
+        $data['pdam_consumption'] = $this->calculatePdamConsumption($data['pdam'], $report_id);
         $data['pdam_cost'] = $this->calculatePdamCost($energy->pdam);
-        $data['pdam_month_to_date'] = $this->calculatePdamMonthToDateCost($data['pdam_cost']);
+        $data['pdam_month_to_date'] = $this->calculatePdamMonthToDateCost($data['pdam_cost'], $report_id);
         $data['deep_well'] = $input['deep_well'];
-        $data['deep_well_consumption'] = $this->calculateDeepWellConsumption($data['deep_well']);
+        $data['deep_well_consumption'] = $this->calculateDeepWellConsumption($data['deep_well'], $report_id);
         $data['deep_well_cost'] = $this->calculateDeepWellCost($energy->deep_well);
-        $data['deep_well_month_to_date'] = $this->calculateDeepWellMonthToDateCost($data['deep_well_cost']);
+        $data['deep_well_month_to_date'] = $this->calculateDeepWellMonthToDateCost($data['deep_well_cost'], $report_id);
         $data['water_per_room'] = ($data['pdam_cost'] + $data['deep_well_cost']) / $data['occupancy'];
+        return $data;
+    }
+
+    /**
+     * Make new water report
+     *
+     * @param array $input
+     * @param App\Models\Energy
+     */
+    public function makeReport($input, $energy) {
+        $data = $this->processInput($input, $energy);
         $this->updateOrCreate($data);
+    }
+
+    /**
+     * Update specified water report
+     *
+     * @param array $input
+     * @param App\Models\Energy $energy
+     */
+    public function updateReport($input, $energy, $report_id) {
+        $data = $this->processInput($input, $energy, $report_id);
+        $this->update($data);
     }
 
     /**
@@ -175,7 +217,7 @@ class WaterReport extends Model
             })
             ->editColumn('action', function ($data) {
                 $html = '
-                <a href="javascript: void(0)" class="btn btn-warning edit waves-effect waves-light" data-id="' . encrypt($data->id) . '" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Edit">
+                <a href="javascript: void(0)" class="btn btn-warning edit-water waves-effect waves-light" data-id="' . encrypt($data->id) . '">
                     <i class="mdi mdi-pencil"></i>
                 </a>';
                 return in_array(auth()->user()->role_id, [1,2]) ? $html : '';

@@ -14,6 +14,7 @@ class ElectricityReport extends Model
      * @var array
      */
     protected $fillable = [
+        'energy_id',
         'lwbp',
         'lwbp_total',
         'lwbp_cost',
@@ -91,9 +92,13 @@ class ElectricityReport extends Model
      * @param float $current_cost
      * @return float
      */
-    public function calculateMonthToDateCost($current_cost)
+    public function calculateMonthToDateCost($current_cost, $report_id = null)
     {
-        $lastRecords = Self::whereMonth('created_at', date('m'))->get();
+        if($report_id) {
+            $lastRecords = Self::whereMonth('created_at', date('m'))->where('id', '!=', $report_id)->get();
+        } else {
+            $lastRecords = Self::whereMonth('created_at', date('m'))->get();
+        }
         $monthToDateCost = 0;
         foreach ($lastRecords as $record) {
            $monthToDateCost += $record->cost_total;
@@ -103,12 +108,15 @@ class ElectricityReport extends Model
     }
 
     /**
-     * Make new electricity report
+     * Process input to correct field in database
      *
      * @param array $input
      * @param App\Models\Energy $energy
+     * @return array
      */
-    public function makeReport($input, $energy) {
+    public function processInput($input, $energy, $report_id = null)
+    {
+        $data['energy_id'] = $energy->id;
         $data['lwbp'] = $input['lwbp'];
         $data['wbp'] = $input['wbp'];
         $data['occupancy'] = $input['occupancy'];
@@ -118,8 +126,30 @@ class ElectricityReport extends Model
         $data['wbp_cost'] = $this->calculateWbpCost($energy->wbp);
         $data['cost_total'] = $data['lwbp_cost'] + $data['wbp_cost'];
         $data['electricity_per_room'] = $data['cost_total'] / $data['occupancy'];
-        $data['month_to_date_cost'] = $this->calculateMonthToDateCost($data['cost_total']);
+        $data['month_to_date_cost'] = $this->calculateMonthToDateCost($data['cost_total'], $report_id);
+        return $data;
+    }
+
+    /**
+     * Make new electricity report
+     *
+     * @param array $input
+     * @param App\Models\Energy $energy
+     */
+    public function makeReport($input, $energy) {
+        $data = $this->processInput($input, $energy);
         $this->updateOrCreate($data);
+    }
+
+    /**
+     * Update specified electricity report
+     *
+     * @param array $input
+     * @param App\Models\Energy $energy
+     */
+    public function updateReport($input, $energy, $report_id) {
+        $data = $this->processInput($input, $energy, $report_id);
+        $this->update($data);
     }
 
     /**
@@ -161,7 +191,7 @@ class ElectricityReport extends Model
             })
             ->editColumn('action', function ($data) {
                 $html = '
-                <a href="javascript: void(0)" class="btn btn-warning edit waves-effect waves-light" data-id="' . encrypt($data->id) . '" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Edit">
+                <a href="javascript: void(0)" class="btn btn-warning edit-electricity waves-effect waves-light" data-id="' . encrypt($data->id) . '">
                     <i class="mdi mdi-pencil"></i>
                 </a>';
                 return in_array(auth()->user()->role_id, [1,2]) ? $html : '';

@@ -85,6 +85,13 @@ $(document).ready(function () {
                             );
                             accountPage.dtTable.ajax.reload(null, false);
                         }
+                    },
+                    error: function () {
+                        swal(
+                            "Oops!",
+                            "Something went wrong!",
+                            "error"
+                        );
                     }
                 });
             });
@@ -115,34 +122,48 @@ $(document).ready(function () {
                                 );
                             }
                         });
+                    } else {
+                        swal(
+                            "Oops!",
+                            "Something went wrong!",
+                            "error"
+                        );
                     }
                 }).catch(swal.noop);
             });
 
             $(document).on('click', '.reset', function () {
                 data_id = $(this).attr('data-id');
+                $('#reset-password-form input').val('');
+                $('#reset-password-form .error-msg').addClass('d-none');
                 $('#resetModal').modal('show');
             });
 
-            $('#reset-record-form').on('submit', function (e) {
+            $('#reset-password-form').on('submit', function (e) {
                 e.preventDefault();
                 var data = $(this).serializeArray();
+                data.push({ name: '_method', value: 'PATCH' });
                 $.ajax({
-                    url: '/account/' + data_id,
+                    url: '/change-password/' + data_id,
                     data: data,
-                    type: 'PUT',
-                    success: function(response) {
-                        if(response.status == 200) {
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.status == 200) {
                             $(this).find("input, textarea").val('');
-                            $('#edit-record-form select').val(1).trigger('change');
                             $('button.close').click();
                             swal(
                                 "Success!",
-                                "Data has been edited!",
+                                "Password has been reset!",
                                 "success"
                             );
-                            accountPage.dtTable.ajax.reload(null, false);
                         }
+                    },
+                    error: function () {
+                        swal(
+                            "Oops!",
+                            "Something went wrong!",
+                            "error"
+                        );
                     }
                 });
             });

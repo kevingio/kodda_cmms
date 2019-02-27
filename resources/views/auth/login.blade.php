@@ -26,6 +26,9 @@
                     <div class="p-3">
                         <h4 class="text-muted font-18 m-b-5 text-center">Welcome Back !</h4>
                         <p class="text-muted text-center">Sign in to continue to Korra.</p>
+                        @if($errors->any())
+                            <p class="text-danger m-0">Username or password is incorrect!</p>
+                        @endif
 
                         <form class="form-horizontal m-t-30" action="{{ route('login') }}" method="post">
                             @csrf
@@ -42,7 +45,7 @@
                             <div class="form-group row m-t-20">
                                 <div class="col-6">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customControlInline">
+                                        <input type="checkbox" class="custom-control-input" name="remember" id="customControlInline">
                                         <label class="custom-control-label" for="customControlInline">Remember me</label>
                                     </div>
                                 </div>

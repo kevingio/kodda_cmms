@@ -91,7 +91,7 @@ class EnergyController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        $this->energy->findOrFail(1)->update($data);
+        $this->energy->create($data);
         return response()->json(['status' => 200]);
     }
 

@@ -41,7 +41,7 @@
                             </div>
                             <div class="text-white">
                                 <h6 class="text-uppercase mb-3">Not Started</h6>
-                                <h4 class="mb-4" id="not-started">10</h4>
+                                <h4 class="mb-4" id="not-started">{{ isset($workOrderStatus['not-started']) ? $workOrderStatus['not-started'] : 0 }}</h4>
                                 <i class="mdi mdi-refresh"></i> <span class="ml-2">Updated {{ date('H:i') }}</span>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                             </div>
                             <div class="text-white">
                                 <h6 class="text-uppercase mb-3">In Progress</h6>
-                                <h4 class="mb-4" id="in-progress">7</h4>
+                                <h4 class="mb-4" id="in-progress">{{ isset($workOrderStatus['in-progress']) ? $workOrderStatus['in-progress'] : 0 }}</h4>
                                 <i class="mdi mdi-refresh"></i> <span class="ml-2">Updated {{ date('H:i') }}</span>
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                             </div>
                             <div class="text-white">
                                 <h6 class="text-uppercase mb-3">Waiting</h6>
-                                <h4 class="mb-4" id="waiting">2</h4>
+                                <h4 class="mb-4" id="waiting">{{ (isset($workOrderStatus['waiting-for-part']) ? $workOrderStatus['waiting-for-part'] : 0) + (isset($workOrderStatus['waiting-for-quotation']) ? $workOrderStatus['waiting-for-quotation'] : 0) }}</h4>
                                 <i class="mdi mdi-refresh"></i> <span class="ml-2">Updated {{ date('H:i') }}</span>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                             </div>
                             <div class="text-white">
                                 <h6 class="text-uppercase mb-3">Completed</h6>
-                                <h4 class="mb-4" id="completed">10</h4>
+                                <h4 class="mb-4" id="completed">{{ isset($workOrderStatus['completed']) ? $workOrderStatus['completed'] : 0 }}</h4>
                                 <i class="mdi mdi-refresh"></i> <span class="ml-2">Updated {{ date('H:i') }}</span>
                             </div>
                         </div>
@@ -92,9 +92,6 @@
             </div>
 
             <div class="row">
-
-
-
                 <div class="col-xl-6">
                     <div class="card m-b-20">
                         <div class="card-body">
@@ -106,7 +103,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-xl-6">
                     <div class="card m-b-20">
                         <div class="card-body">
@@ -124,31 +120,30 @@
                     </div>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-xl-3 col-md-6">
-                    <div class="card mini-stat bg-danger" id="cl-card">
+                    <div class="card mini-stat {{ !empty($poolLog) && $poolLog->cl <= 3 ? 'bg-success' : 'bg-danger' }}" id="cl-card">
                         <div class="card-body mini-stat-img">
                             <div class="mini-stat-icon">
                                 <i class="mdi mdi-speedometer float-right"></i>
                             </div>
                             <div class="text-white">
                                 <h6 class="text-uppercase mb-3">Chlorine</h6>
-                                <h4 class="mb-4" id="cl-value">4</h4>
+                                <h4 class="mb-4" id="cl-value">{{ !empty($poolLog->cl) ? $poolLog->cl : 'no record' }}</h4>
                                 <i class="mdi mdi-refresh"></i> <span class="ml-2">Updated {{ date('H:i') }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-xl-3 col-md-6">
-                    <div class="card mini-stat bg-success" id="ph-card">
+                    <div class="card mini-stat {{ !empty($poolLog) && $poolLog->ph >= 7.6 && $poolLog->ph <= 7.8 ? 'bg-success' : 'bg-danger' }}" id="ph-card">
                         <div class="card-body mini-stat-img">
                             <div class="mini-stat-icon">
                                 <i class="mdi mdi-speedometer float-right"></i>
                             </div>
                             <div class="text-white">
                                 <h6 class="text-uppercase mb-3">pH</h6>
-                                <h4 class="mb-4" id="ph-value">7,8</h4>
+                                <h4 class="mb-4" id="ph-value">{{ !empty($poolLog->ph) ? $poolLog->ph : 'no record' }}</h4>
                                 <i class="mdi mdi-refresh"></i> <span class="ml-2">Updated {{ date('H:i') }}</span>
                             </div>
                         </div>
@@ -162,7 +157,7 @@
                             </div>
                             <div class="text-white">
                                 <h6 class="text-uppercase mb-3">Remark</h6>
-                                <h4 class="mb-4" id="remark">-</h4>
+                                <h4 class="mb-4" id="remark">{{ !empty($poolLog) && $poolLog->remark != '' ? $poolLog->remark :'-' }}</h4>
                                 <i class="mdi mdi-refresh"></i> <span class="ml-2">Updated {{ date('H:i') }}</span>
                             </div>
                         </div>
@@ -210,22 +205,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    @if(count($inventoryIn))
+                                        @foreach($inventoryIn as $inventory)
                                         <tr>
-                                            <td>Cat Dulux</td>
-                                            <td>Civil</td>
-                                            <td>4</d>
+                                            <td>{{ $inventory->inventory->name }}</td>
+                                            <td>{{ $inventory->inventory->inventory_model->name }}</td>
+                                            <td>{{ $inventory->inventory->qty }}</td>
                                         </tr>
-                                        <tr>
-                                            <td>Kawat</td>
-                                            <td>Mechanic</td>
-                                            <td>3</d>
+                                        @endforeach
+                                    @else
+                                        <tr class="text-center">
+                                            <td colspan="3">No data available in table</td>
                                         </tr>
-                                        <tr>
-                                            <td>Baterai ABC</td>
-                                            <td>Electric</td>
-                                            <td>4</d>
-                                        </tr>
-
+                                    @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -247,17 +239,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    @if(count($inventoryIn))
+                                        @foreach($inventoryIn as $inventory)
                                         <tr>
-                                            <td>Terpal</td>
-                                            <td>Civil</td>
-                                            <td>2</d>
+                                            <td>{{ $inventory->inventory->name }}</td>
+                                            <td>{{ $inventory->inventory->inventory_model->name }}</td>
+                                            <td>{{ $inventory->inventory->qty }}</td>
                                         </tr>
-                                        <tr>
-                                            <td>Baterai ABC</td>
-                                            <td>Electric</td>
-                                            <td>3</d>
+                                        @endforeach
+                                    @else
+                                        <tr class="text-center">
+                                            <td colspan="3">No data available in table</td>
                                         </tr>
-
+                                    @endif
                                     </tbody>
                                 </table>
                             </div>

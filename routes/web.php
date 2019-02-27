@@ -22,6 +22,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::patch('profile','HomeController@updateProfile')->name('update-profile');
+    Route::patch('change-password/{id}','AccountController@changePassword')->name('change-password');
     Route::resource('inventory','InventoryController')->middleware('role:1,2,6');
     Route::resource('equipment','EquipmentController')->middleware('role:1,2');
     Route::resource('account','AccountController')->middleware('role:1,2');
@@ -30,6 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('maintenance','MaintenanceReportController')->middleware('role:1,2,4');
     Route::resource('pool-management','PoolLogController')->middleware('role:1,2,4');
     Route::resource('energy-report', 'EnergyController')->middleware('role:1,2,4');
+    Route::resource('electricity', 'ElectricityReportController')->middleware('role:1,2');
+    Route::resource('gas', 'GasReportController')->middleware('role:1,2');
+    Route::resource('water', 'WaterReportController')->middleware('role:1,2');
+    Route::get('export', 'HomeController@export');
 });
 
 Route::prefix('master-data')->name('master.')->middleware(['auth', 'role:1,2'])->group(function () {
@@ -43,6 +48,6 @@ Route::prefix('master-data')->name('master.')->middleware(['auth', 'role:1,2'])-
 });
 
 /* Ajax from Admin Dashboard */
-Route::any('/ajax/{page}', function ($page) {
+Route::any('ajax/{page}', function ($page) {
     return app()->call('\App\Http\Controllers\\'.studly_case($page).'Controller@ajax');
 });

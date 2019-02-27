@@ -15,6 +15,7 @@ class CreateGasReportsTable extends Migration
     {
         Schema::create('gas_reports', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('energy_id');
             $table->float('value', 15, 2);
             $table->float('consumption', 15, 2);
             $table->float('cost', 15, 2);

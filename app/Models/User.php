@@ -96,7 +96,7 @@ class User extends Authenticatable
      */
     public function datatable()
     {
-        $results = $this->with(['department', 'job', 'role'])->where('role_id', '!=', 1)->get();
+        $results = $this->with(['department', 'job', 'role'])->where('role_id', '!=', 1)->where('id', '!=', auth()->id())->get();
         return Datatables::of($results)
             ->editColumn('name', function ($data) {
                 $image = asset('assets/images/default-photo.png');

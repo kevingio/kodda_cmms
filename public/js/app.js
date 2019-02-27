@@ -7216,6 +7216,13 @@ $(document).ready(function () {
                             );
                             accountPage.dtTable.ajax.reload(null, false);
                         }
+                    },
+                    error: function () {
+                        swal(
+                            "Oops!",
+                            "Something went wrong!",
+                            "error"
+                        );
                     }
                 });
             });
@@ -7246,34 +7253,48 @@ $(document).ready(function () {
                                 );
                             }
                         });
+                    } else {
+                        swal(
+                            "Oops!",
+                            "Something went wrong!",
+                            "error"
+                        );
                     }
                 }).catch(swal.noop);
             });
 
             $(document).on('click', '.reset', function () {
                 data_id = $(this).attr('data-id');
+                $('#reset-password-form input').val('');
+                $('#reset-password-form .error-msg').addClass('d-none');
                 $('#resetModal').modal('show');
             });
 
-            $('#reset-record-form').on('submit', function (e) {
+            $('#reset-password-form').on('submit', function (e) {
                 e.preventDefault();
                 var data = $(this).serializeArray();
+                data.push({ name: '_method', value: 'PATCH' });
                 $.ajax({
-                    url: '/account/' + data_id,
+                    url: '/change-password/' + data_id,
                     data: data,
-                    type: 'PUT',
-                    success: function(response) {
-                        if(response.status == 200) {
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.status == 200) {
                             $(this).find("input, textarea").val('');
-                            $('#edit-record-form select').val(1).trigger('change');
                             $('button.close').click();
                             swal(
                                 "Success!",
-                                "Data has been edited!",
+                                "Password has been reset!",
                                 "success"
                             );
-                            accountPage.dtTable.ajax.reload(null, false);
                         }
+                    },
+                    error: function () {
+                        swal(
+                            "Oops!",
+                            "Something went wrong!",
+                            "error"
+                        );
                     }
                 });
             });
@@ -7412,8 +7433,49 @@ $(document).ready(function () {
             this.initDatatable();
         },
         customFunction: function () {
+            var data_id = null;
+
             $('#electricity-pane select[name="month"], #electricity-pane select[name="year"]').on('select2:select', function () {
                 electricityReportPage.dtTable.ajax.reload();
+            });
+
+            $(document).on('click', '.edit-electricity', function () {
+                data_id = $(this).attr('data-id');
+                $.get('/electricity/' + data_id)
+                    .done(function (response) {
+                        $('#edit-electricity-record-form input[name=lwbp]').val(response.lwbp);
+                        $('#edit-electricity-record-form input[name=wbp]').val(response.wbp);
+                        $('#edit-electricity-record-form input[name=occupancy]').val(response.occupancy);
+                        $('#editElectricityModal').modal('show');
+                    });
+            });
+
+            $('#edit-electricity-record-form').on('submit', function (e) {
+                e.preventDefault();
+                let data = $(this).serializeArray();
+                $.ajax({
+                    url: '/electricity/' + data_id,
+                    data: data,
+                    type: 'PUT',
+                    success: function (response) {
+                        if (response.status == 200) {
+                            $(this).find("input, textarea").val('');
+                            electricityReportPage.dtTable.ajax.reload(null, false);
+                            $('button.close').click();
+                            swal(
+                                "Success!",
+                                "Report has been updated!",
+                                "success"
+                            );
+                        } else {
+                            swal(
+                                "Oops!",
+                                "Something went wrong, please refresh the page!",
+                                "error"
+                            );
+                        }
+                    }
+                });
             });
         },
         initSelect2: function () {
@@ -7426,6 +7488,7 @@ $(document).ready(function () {
                 $('#electricity-pane select[name=year]').select2({
                     data: response
                 });
+                $('#electricity-pane select[name=year]').val(date.getFullYear()).trigger('change');
             });
         },
         initDatatable: function () {
@@ -7515,8 +7578,47 @@ $(document).ready(function () {
             this.initDatatable();
         },
         customFunction: function () {
+            var data_id = null;
+
             $('#gas-pane select[name="month"], #gas-pane select[name="year"]').on('select2:select', function () {
                 gasReportPage.dtTable.ajax.reload();
+            });
+
+            $(document).on('click', '.edit-gas', function () {
+                data_id = $(this).attr('data-id');
+                $.get('/gas/' + data_id)
+                    .done(function (response) {
+                        $('#edit-gas-record-form input[name=lpg]').val(response.value);
+                        $('#editGasModal').modal('show');
+                    });
+            });
+
+            $('#edit-gas-record-form').on('submit', function (e) {
+                e.preventDefault();
+                let data = $(this).serializeArray();
+                $.ajax({
+                    url: '/gas/' + data_id,
+                    data: data,
+                    type: 'PUT',
+                    success: function (response) {
+                        if (response.status == 200) {
+                            $(this).find("input, textarea").val('');
+                            gasReportPage.dtTable.ajax.reload(null, false);
+                            $('button.close').click();
+                            swal(
+                                "Success!",
+                                "Report has been updated!",
+                                "success"
+                            );
+                        } else {
+                            swal(
+                                "Oops!",
+                                "Something went wrong, please refresh the page!",
+                                "error"
+                            );
+                        }
+                    }
+                });
             });
         },
         initSelect2: function () {
@@ -7529,6 +7631,7 @@ $(document).ready(function () {
                 $('#gas-pane select[name=year]').select2({
                     data: response
                 });
+                $('#gas-pane select[name=year]').val(date.getFullYear()).trigger('change');
             });
         },
         initDatatable: function () {
@@ -7561,6 +7664,7 @@ $(document).ready(function () {
                     "columnDefs": [
                         { targets: 'no-sort', orderable: false },
                         { targets: 'no-search', searchable: false },
+                        { targets: 'text-center', className: 'text-center' },
                     ]
                 });
             } else {
@@ -7590,6 +7694,7 @@ $(document).ready(function () {
                     "columnDefs": [
                         { targets: 'no-sort', orderable: false },
                         { targets: 'no-search', searchable: false },
+                        { targets: 'text-center', className: 'text-center' },
                     ]
                 });
             }
@@ -7604,8 +7709,49 @@ $(document).ready(function () {
             this.initDatatable();
         },
         customFunction: function () {
+            var data_id = null;
+
             $('#water-pane select[name="month"], #water-pane select[name="year"]').on('select2:select', function () {
                 waterReportPage.dtTable.ajax.reload();
+            });
+
+            $(document).on('click', '.edit-water', function () {
+                data_id = $(this).attr('data-id');
+                $.get('/water/' + data_id)
+                    .done(function (response) {
+                        $('#edit-water-record-form input[name=pdam]').val(response.pdam);
+                        $('#edit-water-record-form input[name=deep_well]').val(response.deep_well);
+                        $('#edit-water-record-form input[name=occupancy]').val(response.occupancy);
+                        $('#editWaterModal').modal('show');
+                    });
+            });
+
+            $('#edit-water-record-form').on('submit', function (e) {
+                e.preventDefault();
+                let data = $(this).serializeArray();
+                $.ajax({
+                    url: '/water/' + data_id,
+                    data: data,
+                    type: 'PUT',
+                    success: function (response) {
+                        if (response.status == 200) {
+                            $(this).find("input, textarea").val('');
+                            waterReportPage.dtTable.ajax.reload(null, false);
+                            $('button.close').click();
+                            swal(
+                                "Success!",
+                                "Report has been updated!",
+                                "success"
+                            );
+                        } else {
+                            swal(
+                                "Oops!",
+                                "Something went wrong, please refresh the page!",
+                                "error"
+                            );
+                        }
+                    }
+                });
             });
         },
         initSelect2: function () {
@@ -7618,6 +7764,7 @@ $(document).ready(function () {
                 $('#water-pane select[name=year]').select2({
                     data: response
                 });
+                $('#water-pane select[name=year]').val(date.getFullYear()).trigger('change');
             });
         },
         initDatatable: function () {
@@ -7655,6 +7802,7 @@ $(document).ready(function () {
                     "columnDefs": [
                         { targets: 'no-sort', orderable: false },
                         { targets: 'no-search', searchable: false },
+                        { targets: 'text-center', className: 'text-center' },
                     ]
                 });
             } else {
@@ -7689,6 +7837,7 @@ $(document).ready(function () {
                     "columnDefs": [
                         { targets: 'no-sort', orderable: false },
                         { targets: 'no-search', searchable: false },
+                        { targets: 'text-center', className: 'text-center' },
                     ]
                 });
             }
@@ -9493,8 +9642,12 @@ $(document).ready(function () {
                     "success"
                 );
             },
-            error: function(response) {
-                swal("Oops", 'Something went wrong, please refresh the page!', "error");
+            error: function () {
+                swal(
+                    "Oops!",
+                    "Something went wrong!",
+                    "error"
+                );
             }
         });
     });
@@ -9507,7 +9660,36 @@ $(document).ready(function () {
             }
             reader.readAsDataURL(this.files[0]);
         }
-    })
+    });
+
+    $('#change-password-form').on('submit', function (e) {
+        e.preventDefault();
+        var data = $(this).serializeArray();
+        data.push({ name: '_method', value: 'PATCH' });
+        $.ajax({
+            url: '/change-password/' + data[2].value,
+            data: data,
+            type: 'POST',
+            success: function (response) {
+                if (response.status == 200) {
+                    $(this).find("input").val('');
+                    $('button.close').click();
+                    swal(
+                        "Success!",
+                        "Password changed!",
+                        "success"
+                    );
+                }
+            },
+            error: function (response) {
+                swal(
+                    "Oops!",
+                    "Something went wrong!" + response.responseJSON.message,
+                    "error"
+                );
+            }
+        });
+    });
 });
 
 $(document).ready(function () {
