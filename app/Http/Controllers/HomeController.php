@@ -36,7 +36,7 @@ class HomeController extends Controller
                 return redirect()->route('inventory.index');
                 break;
         }
-        $workOrderStatus = $this->workOrder->getStatusToday();
+        $workOrderStatus = $this->workOrder->getStatusThisMonth();
         $poolLog = $this->log->latest()->first();
         $inventoryIn = $this->inventory->with('inventory.inventory_model')->where('mode', 'in')->whereMonth('created_at', date('m'))->get();
         $inventoryOut = $this->inventory->with('inventory.inventory_model')->where('mode', 'out')->whereMonth('created_at', date('m'))->get();

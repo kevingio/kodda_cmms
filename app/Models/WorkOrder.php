@@ -151,7 +151,7 @@ class WorkOrder extends Model
     }
 
     /**
-     * Get Datatable Data
+     * Get Work Order Status Today
      * @return array
      */
     public function getStatusToday()
@@ -169,6 +169,26 @@ class WorkOrder extends Model
                             ->whereDate('created_at', date('Y-m-d'))
                             ->get();
         }
+        $data = [];
+        $total = 0;
+        foreach ($statuses as $value) {
+            $data[str_slug($value->status)] = $value->count;
+            $total += $value->count;
+        }
+        $data['total'] = $total;
+        return $data;
+    }
+
+     /**
+     * Get Work Order Status this month
+     * @return array
+     */
+    public function getStatusThisMonth()
+    {
+        $statuses = $this->select('status', DB::raw('count(*) as count'))
+                            ->groupBy('status')
+                            ->whereMonth('created_at', date('m'))
+                            ->get();
         $data = [];
         $total = 0;
         foreach ($statuses as $value) {
