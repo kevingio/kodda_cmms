@@ -54,4 +54,4 @@ mix.scripts([
     'public/assets/css/icons.css',
     'public/assets/css/style.css',
     'public/assets/css/custom.css'
-    ], 'public/css/app.css');
+], 'public/css/app.css').version();

@@ -7354,6 +7354,12 @@ $(document).ready(function () {
             this.customFunction();
         },
         customFunction: function () {
+            $('.nav-energy .nav-item').on('click', function () {
+                electricityReportPage.dtTable.ajax.reload(null, false);
+                gasReportPage.dtTable.ajax.reload(null, false);
+                waterReportPage.dtTable.ajax.reload(null, false);
+            });
+
             $('.edit').on('click', function () {
                 $.get('/energy-report/777')
                 .done(function (response) {
@@ -7375,13 +7381,13 @@ $(document).ready(function () {
                     type: 'PUT',
                     success: function (response) {
                         if (response.status == 200) {
-                            $(this).find("input, textarea").val('');
                             $('button.close').click();
                             swal(
                                 "Success!",
                                 "Energy has been updated!",
                                 "success"
                             );
+                            $(this).find("input, textarea").val('');
                         } else {
                             swal(
                                 "Oops!",

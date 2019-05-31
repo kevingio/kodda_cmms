@@ -66,7 +66,7 @@ class EnergyController extends Controller
      */
     public function show($id)
     {
-        $energy = $this->energy->findOrFail(1);
+        $energy = $this->energy->latest()->first();
         return response()->json($energy);
     }
 
