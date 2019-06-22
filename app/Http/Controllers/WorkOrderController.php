@@ -64,10 +64,10 @@ class WorkOrderController extends Controller
         if($request->hasFile('image')) {
             $image = $request->file('image');
             $filename = str_random(28) . '.jpg';
-            $path = 'storage/work_orders/' . $filename;
+            $path = 'public/work_orders/' . $filename;
             $file = Image::make($image->getRealPath())->encode('jpg',75);
-            $file->save($path);
-            $data['image'] = str_replace('storage', 'public', $path);
+            Storage::put($path, (string) $file->encode());
+            $data['image'] = Storage::url($path);
         }
         $this->work_order->create($data);
         $status = $this->work_order->getStatusToday();
@@ -83,7 +83,7 @@ class WorkOrderController extends Controller
     public function show($id)
     {
         $work_order = $this->work_order->with(['assignor', 'location.floor'])->findOrFail(decrypt($id));
-        $work_order->hasImage()->getAllEnginersExceptMe()->formatDueDate();
+        $work_order->getAllEnginersExceptMe()->formatDueDate();
         return response()->json($work_order);
     }
 

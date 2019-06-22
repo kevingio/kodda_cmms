@@ -126,7 +126,6 @@ $(document).ready(function () {
                     cache: false,
                     processData: false,
                     success: (response) => {
-                        console.log(response);
                         $(this).find("input").val('');
                         $('#edit-record-form select[multiple]').val(null).trigger('change');
                         $('#edit-record-form select[name=status]').val(1).trigger('change');

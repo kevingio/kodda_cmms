@@ -14,6 +14,8 @@ class WorkReportController extends Controller
         $this->work_report = $work_report;
         $this->work_order = $work_order;
         $this->mt_report = $mt_report;
+        $this->middleware('role:1,2', ['except' => ['create', 'store']]);
+        $this->middleware('role:3,4,5,6', ['only' => ['create', 'store']]);
     }
 
     /**

@@ -126,6 +126,12 @@ class EnergyController extends Controller
             case 'select2':
                 return $this->{$request->type}->getYearList();
                 break;
+            case 'water-chart':
+                return $this->energy->getWaterChart();
+                break;
+            case 'electricity-chart':
+                return $this->energy->getElectricityChart();
+                break;
         }
     }
 }

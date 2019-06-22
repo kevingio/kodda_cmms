@@ -101,7 +101,7 @@ class User extends Authenticatable
             ->editColumn('name', function ($data) {
                 $image = asset('assets/images/default-photo.png');
                 if(!empty($data->avatar)) {
-                    $image = Storage::url($data->avatar);
+                    $image = $data->avatar;
                 }
                 $html = '<img src="'.$image.'" alt="user-image" class="thumb-md rounded-circle mr-2"/>';
                 return $html . $data->name;
@@ -122,9 +122,6 @@ class User extends Authenticatable
                 </a>
                 <a href="javascript: void(0)" class="btn btn-danger delete waves-effect waves-light" data-id="'.encrypt($data->id).'" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Delete">
                     <i class="mdi mdi-delete"></i>
-                </a>
-                <a href="javascript: void(0)" class="btn btn-info info waves-effect waves-light" data-id="'.encrypt($data->id).'" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="View Avatar">
-                    <i class="mdi mdi-information"></i>
                 </a>
                 <a href="javascript: void(0)" class="btn btn-warning reset waves-effect waves-light" data-id="'.encrypt($data->id).'" data-toggle="tooltip" data-trigger="hover" data-placement="top" title="Reset Password">
                     <i class="mdi mdi-lock"></i>
