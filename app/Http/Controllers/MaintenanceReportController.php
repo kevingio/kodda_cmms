@@ -133,6 +133,9 @@ class MaintenanceReportController extends Controller
             case 'datatable':
                 return $this->maintenance_report->datatable($request->date);
                 break;
+            case 'datatable-done':
+                return $this->maintenance_report->getCompletedMaintenanceReport();
+                break;
         }
     }
 }

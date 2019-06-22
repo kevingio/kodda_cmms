@@ -171,7 +171,7 @@
                         <div class="card-body">
                             <h4 class="mt-0 m-b-30 header-title">Maintenance Done</h4>
                             <div class="table-responsive">
-                                <table class="table table-vertical" id="datatable">
+                                <table class="table table-vertical" id="maintenance-datatable">
                                     <thead>
                                         <tr class="font-weight-bold">
                                             <th width="170">MT Number</th>
@@ -179,7 +179,6 @@
                                             <th class="no-sort no-search">Serial Number</th>
                                             <th width="200" class="no-sort no-search">Location</th>
                                             <th width="150" class="no-sort">Status</th>
-                                            <th width="150" class="no-sort no-search text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>

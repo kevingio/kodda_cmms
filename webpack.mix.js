@@ -29,13 +29,11 @@ mix.scripts([
     'public/plugins/datatables/dataTables.responsive.min.js',
     'public/plugins/datatables/responsive.bootstrap4.min.js',
     'public/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js',
-    'public/assets/pages/datatables.init.js',
     'public/plugins/sweet-alert2/sweetalert2.min.js',
     'public/plugins/moment/moment.js',
     'public/plugins/fullcalendar/js/fullcalendar.min.js',
     'public/plugins/fullcalendar/js/rrule-calendar.min.js',
     'public/plugins/select2/js/select2.full.min.js',
-    'public/assets/pages/calendar-init.js',
     'public/assets/js/app.js',
     'public/assets/js/contents/*.js'
     ], 'public/js/app.js')
@@ -54,4 +52,4 @@ mix.scripts([
     'public/assets/css/icons.css',
     'public/assets/css/style.css',
     'public/assets/css/custom.css'
-    ], 'public/css/app.css');
+], 'public/css/app.css').version();

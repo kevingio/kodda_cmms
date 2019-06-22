@@ -19,48 +19,6 @@
         });
     }
 
-    // water chart
-    c3.generate({
-        bindto: '#chart-water',
-        data: {
-            columns: [
-                ['Revenue', 130, 120, 150, 140, 160, 150, 130, 120, 150, 140, 160, 150],
-            ],
-            types: {
-                Revenue: 'area-spline',
-                // 'line', 'spline', 'step', 'area', 'area-step' are also available to stack
-            },
-            colors: {
-                Revenue: '#3eb7ba'
-            }
-        }
-    });
-
-    // electricity chart
-    c3.generate({
-        bindto: '#chart-electricity',
-        data: {
-            x: 'x',
-            columns: [
-                ['x', '2014-07-24', '2014-07-25', '2014-07-26', '2014-07-27', '2014-07-28', '2014-07-29'],
-                ['Pageview', 200, 130, 90, 240, 130, 220]
-            ],
-            types: {
-                Revenue: 'line',
-                // 'line', 'spline', 'step', 'area', 'area-step' are also available to stack
-            },
-            colors: {
-                Revenue: '#f0f1f4',
-            }
-        },
-        axis: {
-            x: {
-                type: 'timeseries',
-                format: '%Y-%m-%d'
-            }
-        }
-    });
-
     var MainApp = function() {};
 
     MainApp.prototype.intSlimscrollmenu = function () {

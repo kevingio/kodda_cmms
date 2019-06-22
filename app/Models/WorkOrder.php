@@ -82,22 +82,12 @@ class WorkOrder extends Model
     }
 
     /**
-     * Get image public path
-     *
-     */
-    public function getImagePath()
-    {
-        $this->image = Storage::url($this->image);
-        return $this;
-    }
-
-    /**
      * Check if record has image
      *
      */
     public function hasImage()
     {
-        return is_null($this->image) ? $this : $this->getImagePath();
+        return is_null($this->image) ? $this : $this->image;
     }
 
     /**
@@ -118,7 +108,7 @@ class WorkOrder extends Model
     {
         $engineers = [];
         $engineers_in_string = '';
-        foreach ($this->engineers as $engineer) {
+        foreach ($this->engineers as $key => $engineer) {
             if($engineer->id != auth()->user()->id) {
                 $engineers[] = $engineer->id;
                 $engineers_in_string .= $engineer->name;
@@ -214,7 +204,7 @@ class WorkOrder extends Model
             ->editColumn('task', function ($data) {
                 $html = '';
                 if(!empty($data->image)) {
-                    $html = '<img src="' . Storage::url($data->image) . '" alt="thumbnail" class="thumb-md rounded-circle mr-2"/>';
+                    $html = '<img src="' . $data->image . '" alt="thumbnail" class="thumb-md rounded-circle mr-2"/>';
                 }
                 return $html . $data->task;
             })

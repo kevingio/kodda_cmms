@@ -10,13 +10,12 @@
         <meta content="Themesbrand" name="author" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet" type="text/css">
+        @laravelPWA
     </head>
 
     <body>
 
-        <!-- Begin page -->
         <div id="wrapper">
 
             @include('layouts.top-bar')
@@ -24,11 +23,9 @@
             @include('layouts.left-sidebar')
             @yield('content')
 
-
         </div>
-        <!-- END wrapper -->
 
-        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset(mix('js/app.js')) }}"></script>
 
     </body>
 

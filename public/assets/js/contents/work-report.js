@@ -13,6 +13,7 @@ $(document).ready(function () {
             $('#add-record-form').on('submit', function (e) {
                 e.preventDefault();
                 var data = $(this).serializeArray();
+                console.log(data);
                 $.post('/work-report', data)
                 .done(function () {
                     swal({

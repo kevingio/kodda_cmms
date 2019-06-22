@@ -19,7 +19,7 @@
                                 <div class="form-group row">
                                     <label for="example-url-input" class="col-md-2 col-form-label">Work Date</label>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control disabled" value="{{ date('Y-m-d') }}" readonly>
+                                        <input type="text" class="form-control disabled" name="work_date" value="{{ date('Y-m-d') }}" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group row">

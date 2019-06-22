@@ -8,17 +8,19 @@ use App\Models\User;
 use App\Models\WorkOrder;
 use App\Models\PoolLog;
 use App\Models\InventoryReport;
+use App\Models\MaintenanceReport;
 use Image;
 use PDF;
 
 class HomeController extends Controller
 {
 
-    function __construct(User $user, WorkOrder $workOrder, PoolLog $poolLog, InventoryReport $inventory) {
+    function __construct(User $user, WorkOrder $workOrder, PoolLog $poolLog, InventoryReport $inventory, MaintenanceReport $mtReport) {
         $this->user = $user;
         $this->workOrder = $workOrder;
         $this->log = $poolLog;
         $this->inventory = $inventory;
+        $this->mtReport = $mtReport;
     }
 
     /**
@@ -36,11 +38,12 @@ class HomeController extends Controller
                 return redirect()->route('inventory.index');
                 break;
         }
+        $maintenances = $this->mtReport->where('status', 'completed')->get();
         $workOrderStatus = $this->workOrder->getStatusThisMonth();
         $poolLog = $this->log->latest()->first();
         $inventoryIn = $this->inventory->with('inventory.inventory_model')->where('mode', 'in')->whereMonth('created_at', date('m'))->get();
         $inventoryOut = $this->inventory->with('inventory.inventory_model')->where('mode', 'out')->whereMonth('created_at', date('m'))->get();
-        return view('dashboard.index', compact('workOrderStatus', 'poolLog', 'inventoryIn', 'inventoryOut'));
+        return view('dashboard.index', compact('workOrderStatus', 'poolLog', 'inventoryIn', 'inventoryOut', 'maintenances'));
     }
 
     /**
@@ -58,13 +61,14 @@ class HomeController extends Controller
             }
             $image = $request->file('avatar');
             $filename = str_random(28) . '.' . $image->extension();
-            $path = 'storage/avatars/' . $filename;
+            $path = 'public/avatars/' . $filename;
             $file = Image::make($image->getRealPath())->fit(500,500);
-            $file->save($path);
-            $data['avatar'] = str_replace('storage', 'public', $path);
+            Storage::put($path, (string) $file->encode());
+
+            $data['avatar'] = Storage::url($path);
         }
         $user->update($data);
-        return response()->json(['name' => $data['name'], 'avatar' => $request->hasFile('avatar') ? $path : null]);
+        return response()->json(['name' => $data['name'], 'avatar' => $request->hasFile('avatar') ? $data['avatar'] : null]);
     }
 
     public function export()

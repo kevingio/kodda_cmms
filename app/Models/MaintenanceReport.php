@@ -222,5 +222,47 @@ class MaintenanceReport extends Model
             ->rawColumns(['status', 'action'])
             ->make(true);
     }
+    /**
+     * Get Completed Maintenance Report
+     * @return array
+     */
+    public function getCompletedMaintenanceReport()
+    {
+        $results = $this->with(['equipment.location.floor', 'equipment.model'])->where('status', 'completed')->whereDate('created_at', date('Y-m-d'))->get();
+        return Datatables::of($results)
+            ->editColumn('location', function ($data) {
+                return $data->equipment->location->area . ' - ' . $data->equipment->location->floor->description;
+            })
+            ->editColumn('model', function ($data) {
+                return $data->equipment->model->name;
+            })
+            ->editColumn('serial_number', function ($data) {
+                return $data->equipment->serial_number;
+            })
+            ->editColumn('status', function ($data) {
+                switch ($data->status) {
+                    case 'not started':
+                        $status = 'badge-danger';
+                        break;
+
+                    case 'in progress':
+                        $status = 'badge-primary';
+                        break;
+
+                    case 'waiting for quotation':
+                    case 'waiting for part':
+                        $status = 'badge-warning';
+                        break;
+
+                    case 'completed':
+                        $status = 'badge-success';
+                        break;
+                }
+                $html = '<span class="badge badge-pill ' . $status . '">' . ucfirst($data->status) . '</span> ';
+                return $html;
+            })
+            ->rawColumns(['status'])
+            ->make(true);
+    }
 
 }

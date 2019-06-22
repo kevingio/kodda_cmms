@@ -26,7 +26,7 @@
                 <div class="col-12">
                     <div class="card m-b-20">
                         <div class="card-body">
-                            <ul class="nav nav-pills nav-fill">
+                            <ul class="nav nav-pills nav-fill nav-energy">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="electricity-tab" data-toggle="tab" href="#electricity-pane">Electricity</a>
                                 </li>

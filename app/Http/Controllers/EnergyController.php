@@ -66,7 +66,7 @@ class EnergyController extends Controller
      */
     public function show($id)
     {
-        $energy = $this->energy->findOrFail(1);
+        $energy = $this->energy->latest()->first();
         return response()->json($energy);
     }
 
@@ -125,6 +125,12 @@ class EnergyController extends Controller
                 break;
             case 'select2':
                 return $this->{$request->type}->getYearList();
+                break;
+            case 'water-chart':
+                return $this->energy->getWaterChart();
+                break;
+            case 'electricity-chart':
+                return $this->energy->getElectricityChart();
                 break;
         }
     }
