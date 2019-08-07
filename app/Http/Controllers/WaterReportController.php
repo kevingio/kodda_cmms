@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\WaterReport;
 use App\Models\Energy;
+use PDF;
 
 class WaterReportController extends Controller
 {
@@ -93,5 +94,28 @@ class WaterReportController extends Controller
     public function destroy($id)
     {
         abort(404);
+    }
+
+    /**
+     * Export Water Report to PDF File
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return PDF File
+     */
+    public function export(Request $request)
+    {
+        if(!empty($request->month)) {
+            $reportMonth = strtotime($request->month);
+            $reportData = $this->water->whereMonth('created_at', date('m', $reportMonth))->oldest()->get();
+            $pdf = PDF::loadView('pdf.energy-report.water',
+            [
+                'reportData' => $reportData,
+                'reportMonth' => date('F Y', $reportMonth)
+            ]);
+            return $pdf->download('water-report-' . date('d-m-Y') . '.pdf');
+        } else {
+            return redirect('/');
+        }
     }
 }

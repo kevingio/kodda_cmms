@@ -52,6 +52,15 @@ class Equipment extends Model
     }
 
     /**
+     * Relation to Maintenance Report
+     *
+     */
+    public function mt_reports()
+    {
+        return $this->hasMany('App\Models\MaintenanceReport');
+    }
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
@@ -100,10 +109,10 @@ class Equipment extends Model
      */
     public function maintenance()
     {
-        $results = $this->with(['model', 'location.floor'])->get();
+        $results = $this->with(['model', 'location.floor', 'mt_reports'])->get();
         $events = [];
         foreach ($results as $data) {
-            $start_date = date('Y-m-d', strtotime('+' . $data->maintenance_period . ' month', strtotime($data->created_at)));
+            $start_date = date('Y-m-d', strtotime($data->mt_reports[0]->created_at));
             $events[] = [
                 'id' => $data->id,
                 'title' => $data->model->name,

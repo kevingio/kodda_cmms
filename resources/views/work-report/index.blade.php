@@ -9,11 +9,13 @@
                         <h4 class="page-title">Daily Activity</h4>
                     </div>
                 </div>
+                @if(!in_array(auth()->user()->role_id, [1,2]))
                 <div class="col d-inline d-sm-none text-right">
                     <div class="page-title-box ">
                         <a href="{{ route('work-report.create') }}" class="btn btn-primary">Create Work Report</a>
                     </div>
                 </div>
+                @endif
             </div>
 
             <div class="row">
@@ -47,7 +49,7 @@
 
 <!-- Detail Work Report Modal -->
 <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title m-0">Detail Report</h5>

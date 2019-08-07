@@ -11,7 +11,6 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
         <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet" type="text/css">
-        @laravelPWA
     </head>
 
     <body>

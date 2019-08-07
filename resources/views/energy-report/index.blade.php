@@ -11,14 +11,26 @@
                 </div>
                 <div class="col text-right">
                     <div class="page-title-box ">
-                        <a class="btn btn-warning dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Create
-                        </a>
+                        <span>
+                            <a class="btn btn-info dropdown-toggle mr-2" href="#" role="button" id="dropdownDownloadEnergy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Download
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownDownloadEnergy">
+                                <a href="javascript: void(0)" class="dropdown-item btn-export">Electricity</a>
+                                <a href="javascript: void(0)" class="dropdown-item btn-export">Gas</a>
+                                <a href="javascript: void(0)" class="dropdown-item btn-export">Water</a>
+                            </div>
+                        </span>
+                        <span>
+                            <a class="btn btn-warning dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Create
+                            </a>
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a href="javascript: void(0)" class="dropdown-item" data-toggle="modal" data-target="#addModal">Create Report</a>
-                            <a href="javascript: void(0)" class="dropdown-item edit">Update Energy</a>
-                        </div>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a href="javascript: void(0)" class="dropdown-item" data-toggle="modal" data-target="#addModal">Create Report</a>
+                                <a href="javascript: void(0)" class="dropdown-item edit">Update Energy</a>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -53,7 +65,7 @@
 
 <!-- Create Energy Report Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <form id="add-record-form">
                 <div class="modal-header">
@@ -105,7 +117,7 @@
 
 <!-- Update Energy Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <form id="edit-record-form">
                 <div class="modal-header">

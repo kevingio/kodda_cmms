@@ -19,7 +19,7 @@ Route::post('login', 'Auth\LoginController@login')->name('login');
 Route::get('login',  'Auth\LoginController@showLoginForm');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::patch('profile','HomeController@updateProfile')->name('update-profile');
     Route::patch('change-password/{id}','AccountController@changePassword')->name('change-password');
@@ -34,7 +34,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('electricity', 'ElectricityReportController')->middleware('role:1,2');
     Route::resource('gas', 'GasReportController')->middleware('role:1,2');
     Route::resource('water', 'WaterReportController')->middleware('role:1,2');
-    Route::get('export', 'HomeController@export');
+    Route::get('export/water', 'WaterReportController@export')->middleware('role:1,2');
+    Route::get('export/gas', 'GasReportController@export')->middleware('role:1,2');
+    Route::get('export/electricity', 'ElectricityReportController@export')->middleware('role:1,2');
 });
 
 Route::prefix('master-data')->name('master.')->middleware(['auth', 'role:1,2'])->group(function () {

@@ -6,6 +6,18 @@ $(document).ready(function () {
             this.customFunction();
         },
         customFunction: function () {
+            $('.btn-export').on('click', function () {
+                let month = $('select[name="month"]').val()
+                let year = $('select[name="year"]').val()
+                let report  = $(this).text().toLowerCase()
+                window.location.href = '/export/' + report + '?month=' + year + '-' + month
+                swal(
+                    "Success!",
+                    "Report Downloaded!",
+                    "success"
+                );
+            })
+
             $('.nav-energy .nav-item').on('click', function () {
                 electricityReportPage.dtTable.ajax.reload(null, false);
                 gasReportPage.dtTable.ajax.reload(null, false);

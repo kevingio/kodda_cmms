@@ -10,7 +10,6 @@ use App\Models\PoolLog;
 use App\Models\InventoryReport;
 use App\Models\MaintenanceReport;
 use Image;
-use PDF;
 
 class HomeController extends Controller
 {
@@ -41,8 +40,8 @@ class HomeController extends Controller
         $maintenances = $this->mtReport->where('status', 'completed')->get();
         $workOrderStatus = $this->workOrder->getStatusThisMonth();
         $poolLog = $this->log->latest()->first();
-        $inventoryIn = $this->inventory->with('inventory.inventory_model')->where('mode', 'in')->whereMonth('created_at', date('m'))->get();
-        $inventoryOut = $this->inventory->with('inventory.inventory_model')->where('mode', 'out')->whereMonth('created_at', date('m'))->get();
+        $inventoryIn = $this->inventory->with('inventory.inventory_model')->where('mode', 'in')->whereHas('inventory')->whereMonth('created_at', date('m'))->get();
+        $inventoryOut = $this->inventory->with('inventory.inventory_model')->where('mode', 'out')->whereHas('inventory')->whereMonth('created_at', date('m'))->get();
         return view('dashboard.index', compact('workOrderStatus', 'poolLog', 'inventoryIn', 'inventoryOut', 'maintenances'));
     }
 
@@ -69,14 +68,5 @@ class HomeController extends Controller
         }
         $user->update($data);
         return response()->json(['name' => $data['name'], 'avatar' => $request->hasFile('avatar') ? $data['avatar'] : null]);
-    }
-
-    public function export()
-    {
-        $data['workOrderStatus'] = $this->workOrder->getStatusToday();
-        $data['poolLog'] = $this->log->latest()->first();
-        $pdf = PDF::loadView('pdf.summary', $data);
-        return $pdf->download('summary.pdf');
-        // return view('pdf.summary', compact($data));
     }
 }

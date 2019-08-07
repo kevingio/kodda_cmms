@@ -156,7 +156,7 @@ class MaintenanceReport extends Model
      * @param App\Models\Equipment $equipment
      * @param int $month
      */
-    function makeMaintenanceReportFor($equipment, $month = 48, $iteration = 1)
+    function makeMaintenanceReportFor($equipment, $startDate, $month = 48, $iteration = 1)
     {
         if($month < $equipment->maintenance_period) {
             return;
@@ -164,9 +164,9 @@ class MaintenanceReport extends Model
             $this->updateOrCreate([
                 'mt_number' => $this->generateMaintenanceNumber(),
                 'equipment_id' => $equipment->id,
-                'created_at' => $this->getNextMaintenanceDate($equipment->created_at, $iteration * $equipment->maintenance_period)
+                'created_at' => $this->getNextMaintenanceDate($startDate, $iteration * $equipment->maintenance_period)
             ]);
-            return $this->makeMaintenanceReportFor($equipment, $month - $equipment->maintenance_period, $iteration + 1);
+            return $this->makeMaintenanceReportFor($equipment, $startDate, $month - $equipment->maintenance_period, $iteration + 1);
         }
     }
 

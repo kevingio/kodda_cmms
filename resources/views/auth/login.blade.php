@@ -53,12 +53,6 @@
                                     <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Log In</button>
                                 </div>
                             </div>
-
-                            <div class="form-group m-t-10 mb-0 row">
-                                <div class="col-12 m-t-20">
-                                    <a href="pages-recoverpw.html" class="text-muted"><i class="mdi mdi-lock"></i> Forgot your password?</a>
-                                </div>
-                            </div>
                         </form>
                     </div>
 

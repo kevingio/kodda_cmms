@@ -21610,17 +21610,13 @@ Invoice
     width: auto;
 }
 
-img[alt=user-image] {
+img[alt=user-image], .fc-event {
     cursor: pointer;
 }
 
 .img-fluid {
     max-width: none;
     width: 100%;
-}
-
-.fc-event {
-    cursor: default;
 }
 
 .checkbox input {

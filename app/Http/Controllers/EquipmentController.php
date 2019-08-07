@@ -48,9 +48,9 @@ class EquipmentController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->except('start_date');
         $equipment = $this->equipment->updateOrCreate($data);
-        $this->mt_report->makeMaintenanceReportFor($equipment);
+        $this->mt_report->makeMaintenanceReportFor($equipment, $request->start_date);
         return response()->json(['status' => 200]);
     }
 

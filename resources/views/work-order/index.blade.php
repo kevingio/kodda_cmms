@@ -10,11 +10,13 @@
                         <h4 class="page-title">My Work Order</h4>
                     </div>
                 </div>
+                @if(!in_array(auth()->user()->role_id, [1,2]))
                 <div class="col d-inline d-sm-none text-right">
                     <div class="page-title-box ">
                         <a href="javascript: void(0)" class="btn btn-warning add-work-order">Create Work Order</a>
                     </div>
                 </div>
+                @endif
             </div>
 
             <div class="row">
@@ -179,7 +181,7 @@
 @if(auth()->user()->role_id == 4)
 <!-- Complete Work Order Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <form id="edit-record-form" enctype="multipart/form-data">
                 <div class="modal-header">
@@ -256,7 +258,7 @@
 
 <!-- Work Order Detail Modal -->
 <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header text-center d-block">
                 <h5 class="m-0"></h5>

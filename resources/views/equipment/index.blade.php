@@ -112,6 +112,17 @@
                             <label for="example-text-input" class="col-form-label">/ month</label>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="example-text-input" class="col-sm-3 col-form-label">Start Date<span class="text-danger">*</span></label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input type="text" name="start_date" class="form-control" autocomplete="off" placeholder="mm/dd/yyyy" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <label for="example-text-input" class="col-sm-3 col-form-label">Contact<span class="text-danger">*</span></label>
                         <div class="col-sm-9">

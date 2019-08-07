@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ElectricityReport;
 use App\Models\Energy;
+use PDF;
 
 class ElectricityReportController extends Controller
 {
@@ -21,9 +22,7 @@ class ElectricityReportController extends Controller
      */
     public function index()
     {
-        $energy = $this->energy->latest()->get();
-        dd($energy->lwbp);
-        // abort(404);
+        abort(404);
     }
 
     /**
@@ -95,5 +94,28 @@ class ElectricityReportController extends Controller
     public function destroy($id)
     {
         abort(404);
+    }
+
+    /**
+     * Export Water Report to PDF File
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return PDF File
+     */
+    public function export(Request $request)
+    {
+        if(!empty($request->month)) {
+            $reportMonth = strtotime($request->month);
+            $reportData = $this->electricity->whereMonth('created_at', date('m', $reportMonth))->oldest()->get();
+            $pdf = PDF::loadView('pdf.energy-report.electricity',
+            [
+                'reportData' => $reportData,
+                'reportMonth' => date('F Y', $reportMonth)
+            ]);
+            return $pdf->download('electricity-report-' . date('d-m-Y') . '.pdf');
+        } else {
+            return redirect('/');
+        }
     }
 }

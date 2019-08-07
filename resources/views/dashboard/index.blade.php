@@ -205,11 +205,11 @@
                                     </thead>
                                     <tbody>
                                     @if(count($inventoryIn))
-                                        @foreach($inventoryIn as $inventory)
+                                        @foreach($inventoryIn as $in)
                                         <tr>
-                                            <td>{{ $inventory->inventory->name }}</td>
-                                            <td>{{ $inventory->inventory->inventory_model->name }}</td>
-                                            <td>{{ $inventory->inventory->qty }}</td>
+                                            <td>{{ $in->inventory->name }}</td>
+                                            <td>{{ $in->inventory->inventory_model->name }}</td>
+                                            <td>{{ $in->qty }}</td>
                                         </tr>
                                         @endforeach
                                     @else
@@ -238,12 +238,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @if(count($inventoryIn))
-                                        @foreach($inventoryIn as $inventory)
+                                    @if(count($inventoryOut))
+                                        @foreach($inventoryOut as $out)
                                         <tr>
-                                            <td>{{ $inventory->inventory->name }}</td>
-                                            <td>{{ $inventory->inventory->inventory_model->name }}</td>
-                                            <td>{{ $inventory->inventory->qty }}</td>
+                                            <td>{{ $out->inventory->name }}</td>
+                                            <td>{{ $out->inventory->inventory_model->name }}</td>
+                                            <td>{{ $out->qty }}</td>
                                         </tr>
                                         @endforeach
                                     @else

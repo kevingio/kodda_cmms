@@ -6,6 +6,7 @@ $(document).ready(function () {
         init: function () {
             this.initDatatable();
             this.initSelect2();
+            this.initDatepicker();
             this.customFunction();
 		},
         customFunction: function () {
@@ -95,6 +96,12 @@ $(document).ready(function () {
                     }
                 }).catch(swal.noop);
             });
+        },
+        initDatepicker: function () {
+            $('input[name=start_date]').datepicker({
+                autoclose: true,
+            });
+            $('input[name=start_date]').datepicker('setDate', 'today');
         },
         initSelect2: function () {
             $('#add-record-form select').select2({

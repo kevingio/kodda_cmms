@@ -248,6 +248,10 @@ $(document).ready(function () {
                     },
                     dayClick: function(date, jsEvent, view) {
                         window.location.href = '/maintenance/' + date.format();
+                    },
+                    eventClick: function(info) {
+                        console.log(info);
+                        window.location.href = '/maintenance/' + info.start.format();
                     }
                 });
             });

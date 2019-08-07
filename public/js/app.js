@@ -7243,6 +7243,18 @@ $(document).ready(function () {
             this.customFunction();
         },
         customFunction: function () {
+            $('.btn-export').on('click', function () {
+                let month = $('select[name="month"]').val()
+                let year = $('select[name="year"]').val()
+                let report  = $(this).text().toLowerCase()
+                window.location.href = '/export/' + report + '?month=' + year + '-' + month
+                swal(
+                    "Success!",
+                    "Report Downloaded!",
+                    "success"
+                );
+            })
+
             $('.nav-energy .nav-item').on('click', function () {
                 electricityReportPage.dtTable.ajax.reload(null, false);
                 gasReportPage.dtTable.ajax.reload(null, false);
@@ -7755,6 +7767,7 @@ $(document).ready(function () {
         init: function () {
             this.initDatatable();
             this.initSelect2();
+            this.initDatepicker();
             this.customFunction();
 		},
         customFunction: function () {
@@ -7844,6 +7857,12 @@ $(document).ready(function () {
                     }
                 }).catch(swal.noop);
             });
+        },
+        initDatepicker: function () {
+            $('input[name=start_date]').datepicker({
+                autoclose: true,
+            });
+            $('input[name=start_date]').datepicker('setDate', 'today');
         },
         initSelect2: function () {
             $('#add-record-form select').select2({
@@ -8306,6 +8325,10 @@ $(document).ready(function () {
                     },
                     dayClick: function(date, jsEvent, view) {
                         window.location.href = '/maintenance/' + date.format();
+                    },
+                    eventClick: function(info) {
+                        console.log(info);
+                        window.location.href = '/maintenance/' + info.start.format();
                     }
                 });
             });

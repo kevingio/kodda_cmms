@@ -79,7 +79,7 @@
 
 <!-- Add Model Modal -->
 <div class="modal fade" id="addModelModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <form id="add-model-record-form">
                 <div class="modal-header">
@@ -107,7 +107,7 @@
 
 <!-- Edit Model Modal -->
 <div class="modal fade" id="editModelModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <form id="edit-model-record-form">
                 <div class="modal-header">
