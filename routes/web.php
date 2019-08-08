@@ -21,7 +21,7 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('check-php', function () {
   phpinfo();
-})
+});
 
 Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
