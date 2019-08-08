@@ -15,7 +15,7 @@
                         <div class="state-information d-none d-sm-block">
                             <div class="row">
                                 <div class="col-md-12 text-right">
-                                    <h5 class="mt-0">Royal Ambarukmo Yogyakarta</h5>
+                                    <h5 class="mt-0">Integrated Resource Management</h5>
                                     <h6>{{ date('l, dS F Y') }}</h6>
                                 </div>
                             </div>
