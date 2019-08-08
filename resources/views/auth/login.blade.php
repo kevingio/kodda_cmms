@@ -10,7 +10,7 @@
         <meta content="Themesbrand" name="author" />
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
 
-        <link href="{{ mix(asset('css/app.css')) }}" rel="stylesheet" type="text/css">
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css">
     </head>
 
     <body>
@@ -66,7 +66,7 @@
 
         </div>
 
-        <script src="{{ mix(asset('js/app.js')) }}"></script>
+        <script src="{{ mix('js/app.js') }}"></script>
 
     </body>
 </html>

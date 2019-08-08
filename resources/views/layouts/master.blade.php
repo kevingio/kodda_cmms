@@ -11,7 +11,7 @@
         <meta content="Themesbrand" name="author" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-        <link href="{{ asset(mix('css/app.css')) }}" rel="stylesheet" type="text/css">
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css">
     </head>
 
     <body>
@@ -25,7 +25,7 @@
 
         </div>
 
-        <script src="{{ asset(mix('js/app.js')) }}"></script>
+        <script src="{{ mix('js/app.js') }}"></script>
 
     </body>
 
