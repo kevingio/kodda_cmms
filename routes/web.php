@@ -19,10 +19,6 @@ Route::post('login', 'Auth\LoginController@login')->name('login');
 Route::get('login',  'Auth\LoginController@showLoginForm');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::get('check-php', function () {
-  phpinfo();
-});
-
 Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::patch('profile','HomeController@updateProfile')->name('update-profile');
