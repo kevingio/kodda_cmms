@@ -26,7 +26,7 @@
 
                     <div class="p-3">
                         <h4 class="text-muted font-18 m-b-5 text-center">Welcome Back !</h4>
-                        <p class="text-muted text-center">Sign in to continue to Kodda.</p>
+                        <p class="text-muted text-center">Sign in to continue to IRM.</p>
                         @if($errors->any())
                             <p class="text-danger m-0">Username or password is incorrect!</p>
                         @endif
@@ -61,7 +61,7 @@
             </div>
 
             <div class="m-t-40 text-center">
-                <p>© 2018 Kodda. Crafted with <i class="mdi mdi-heart text-danger"></i> by Kevin Giovanni</p>
+                <p>© 2019 IRM. Crafted with <i class="mdi mdi-heart text-danger"></i> by Jet Technology</p>
             </div>
 
         </div>

@@ -59,10 +59,10 @@ class HomeController extends Controller
                 Storage::delete($user->avatar);
             }
             $image = $request->file('avatar');
-            $filename = str_random(28) . '.' . $image->extension();
+            $filename = str_random(28) . '.jpg';
             $path = 'public/avatars/' . $filename;
-            $file = Image::make($image->getRealPath())->fit(500,500);
-            Storage::put($path, (string) $file->encode());
+            $file = Image::make($image->getRealPath())->fit(500,500)->encode('jpg',75);
+            Storage::put($path, (string) $file);
 
             $data['avatar'] = Storage::url($path);
         }

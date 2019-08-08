@@ -66,7 +66,7 @@ class WorkOrderController extends Controller
             $filename = str_random(28) . '.jpg';
             $path = 'public/work_orders/' . $filename;
             $file = Image::make($image->getRealPath())->encode('jpg',75);
-            Storage::put($path, (string) $file->encode());
+            Storage::put($path, (string) $file);
             $data['image'] = Storage::url($path);
         }
         $this->work_order->create($data);
