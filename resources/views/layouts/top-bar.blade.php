@@ -1,7 +1,7 @@
 <div class="topbar">
 
     <!-- LOGO -->
-    <div class="topbar-left">
+    <div class="topbar-left bg-white">
         <a href="{{ route('home') }}" class="logo">
             <span>
                 <img src="{{ asset('assets/images/logo-light.png') }}" alt="" height="18">
