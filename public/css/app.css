@@ -21481,9 +21481,11 @@ Invoice
   Account Pages
 ===================*/
 .wrapper-page {
-  margin: 5.5% auto;
-  max-width: 460px;
-  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  margin: 0px;
 }
 
 .wrapper-page .logo-admin {
@@ -21686,4 +21688,14 @@ div.toolbar {
 
 .tab-pane {
     margin-top: 30px;
+}
+
+/* login page */
+body#login {
+    min-height: 100vh;
+}
+.wrapper {
+    display: block;
+    max-width: 560px;
+    margin: auto;
 }

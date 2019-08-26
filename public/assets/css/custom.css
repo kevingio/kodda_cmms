@@ -79,3 +79,13 @@ div.toolbar {
 .tab-pane {
     margin-top: 30px;
 }
+
+/* login page */
+body#login {
+    min-height: 100vh;
+}
+.wrapper {
+    display: block;
+    max-width: 560px;
+    margin: auto;
+}
