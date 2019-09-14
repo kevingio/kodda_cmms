@@ -8,7 +8,7 @@
         <meta content="Admin Dashboard" name="description" />
         <meta content="Themesbrand" name="author" />
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css">
     </head>
 
     <body id="login">
@@ -66,7 +66,7 @@
 
         </div>
 
-        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ mix('js/app.js') }}"></script>
 
     </body>
 </html>
